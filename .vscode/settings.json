@@ -1,0 +1,6 @@
+{
+  "standard.enable": true,
+  "[javascript]": {
+    "editor.formatOnSave": true
+  }
+}

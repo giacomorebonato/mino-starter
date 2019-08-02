@@ -1,6 +1,6 @@
 "linters": {
     "*.{js,jsx,json}": [
-      "eslint --fix",
+      "standard \"functions/**/*.js\" \"src/**/*.js\" --fix",
       "git add"
     ],
 }
