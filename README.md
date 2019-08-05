@@ -23,7 +23,12 @@ firebase deploy # Deploys app to Firebase hosting
 
 ## Firebase-tools
 
+Create a new project from [Firebase console](https://console.firebase.google.com/).
+
 https://firebase.google.com/docs/cli
+
+Create a realtime database for the project (not Firestore) and set `".read": true` in its rules.
+Execute `firebase init`
 
 ## Resources
 
