@@ -1,3 +1,12 @@
+const NODE_ENV = process.env.NODE_ENV || 'development'
+
+require('dotenv').config({
+  path: `.env.${NODE_ENV}`
+})
+
+console.log('-- -- -- -- -- -- -- -- --')
+console.log('-- -- -- hellow', NODE_ENV)
+
 module.exports = {
   siteMetadata: {
     title: `gatsby-firebase-hosting-starter`,
@@ -10,7 +19,7 @@ module.exports = {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `images`,
-        path: `${ __dirname }/src/images`
+        path: `${__dirname}/src/images`
       }
     },
     `gatsby-transformer-sharp`,

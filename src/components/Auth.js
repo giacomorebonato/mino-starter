@@ -1,21 +1,11 @@
 import firebase from 'firebase/app'
 import 'firebase/auth'
-import 'firebase/database'
-
 import * as firebaseui from 'firebaseui'
-
 import React, { useEffect } from 'react'
 import 'firebaseui/dist/firebaseui.css'
 
-const firebaseConfig = {
-  apiKey: 'AIzaSyCmtLOD_VeXty9W75oFTstALeU3ULyZ8O4',
-  authDomain: 'zen-retros.firebaseapp.com',
-  databaseURL: 'https://zen-retros.firebaseio.com',
-  projectId: 'zen-retros',
-  storageBucket: 'zen-retros.appspot.com',
-  messagingSenderId: '1001073927285',
-  appId: '1:1001073927285:web:0eb0c4d533578113'
-}
+import firebaseConfig from '../lib/firebaseConfig'
+
 firebase.initializeApp(firebaseConfig)
 
 const uiConfig = {
