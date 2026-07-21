@@ -16,7 +16,7 @@ jobs:
       - run: bun run typecheck
       - run: bunx prisma generate
       - run: DATABASE_URL=file:./ci.db bunx prisma migrate reset --force --skip-generate
-      - run: bun test
+      - run: bun run test
       - run: bunx playwright install --with-deps chromium
       - run: bun run test:e2e
         env:
