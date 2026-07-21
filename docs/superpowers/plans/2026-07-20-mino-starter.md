@@ -1056,7 +1056,7 @@ test('signup then signout', async ({ page }) => {
   await page.getByPlaceholder('Name').fill('Test User')
   await page.getByPlaceholder('Email').fill(`e2e-${Date.now()}@example.com`)
   await page.getByPlaceholder('Password').fill('password123')
-  await page.getByRole('button', { name: 'Sign up' }).click()
+  await page.locator('form button[type=submit]').click()
   await expect(page).toHaveURL(/\/notes/)
   await page.getByRole('button', { name: /Sign out/ }).click()
   await expect(page).toHaveURL(/\/login/)
@@ -1076,7 +1076,7 @@ test('create and delete a note', async ({ page }) => {
   await page.getByPlaceholder('Name').fill('E2E Notes')
   await page.getByPlaceholder('Email').fill(email)
   await page.getByPlaceholder('Password').fill('password123')
-  await page.getByRole('button', { name: 'Sign up' }).click()
+  await page.locator('form button[type=submit]').click()
   await expect(page).toHaveURL(/\/notes/)
 
   await page.getByPlaceholder('Title').fill('My note')
