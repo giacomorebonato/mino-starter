@@ -39,7 +39,7 @@ test('notes.list returns own notes', async () => {
 test('notes.list throws UNAUTHORIZED without session', async () => {
 	const ctx = createContext({ session: null })
 	const caller = notesRouter.createCaller(ctx)
-	expect(caller.list()).rejects.toThrow()
+	await expect(caller.list()).rejects.toThrow()
 })
 
 test('notes.create creates a note', async () => {

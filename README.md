@@ -2,6 +2,14 @@
 
 Reusable full-stack starter: Bun + React + tRPC + better-auth + Prisma + daisyUI.
 
+## Deploy
+
+Set the auth secret before first deploy:
+
+```sh
+fly secrets set BETTER_AUTH_SECRET=$(openssl rand -base64 32)
+```
+
 ## Scripts
 
 - `bun run dev` — dev server with HMR
