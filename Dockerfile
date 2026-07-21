@@ -16,6 +16,7 @@ COPY --from=build /app/shared ./shared
 COPY --from=build /app/prisma ./prisma
 COPY --from=build /app/package.json ./package.json
 COPY --from=build /app/bun.lock ./bun.lock
+COPY --from=build /app/tsconfig.json ./tsconfig.json
 ENV NODE_ENV=production
 ENV DATABASE_URL=file:/data/prod.db
 ENV PORT=3000
