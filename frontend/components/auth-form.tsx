@@ -22,7 +22,7 @@ export function AuthForm({ mode }: { mode: 'signin' | 'signup' }) {
 	}
 
 	return (
-		<form className="flex flex-col gap-2 max-w-sm" onSubmit={onSubmit}>
+		<form className="flex max-w-sm flex-col gap-2" onSubmit={onSubmit}>
 			{mode === 'signup' && (
 				<input
 					className="input input-bordered w-full"

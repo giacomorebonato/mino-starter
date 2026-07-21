@@ -26,8 +26,35 @@
 	},
 	"linter": {
 		"enabled": true,
-		"rules": { "preset": "recommended" }
+		"rules": {
+			"preset": "recommended",
+			"nursery": {
+				"useSortedClasses": "error"
+			}
+		}
 	},
+	"overrides": [
+		{
+			"includes": ["**/*.ts", "**/*.tsx"],
+			"linter": {
+				"rules": {
+					"style": {
+						"noDefaultExport": "error"
+					}
+				}
+			}
+		},
+		{
+			"includes": ["e2e/**/*.ts", "playwright.config.ts"],
+			"linter": {
+				"rules": {
+					"style": {
+						"noDefaultExport": "off"
+					}
+				}
+			}
+		}
+	],
 	"css": {
 		"parser": {
 			"tailwindDirectives": true

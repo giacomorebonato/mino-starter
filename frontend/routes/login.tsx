@@ -1,17 +1,17 @@
-import { AppShell } from '@frontend/components/AppShell'
-import { AuthForm } from '@frontend/components/AuthForm'
+import { AppShell } from '@frontend/components/app-shell'
+import { AuthForm } from '@frontend/components/auth-form'
 import { useState } from 'react'
 
 export function LoginRoute() {
 	const [mode, setMode] = useState<'signin' | 'signup'>('signin')
 	return (
 		<AppShell>
-			<div className="flex flex-col gap-6 max-w-sm">
+			<div className="flex max-w-sm flex-col gap-6">
 				<div className="flex flex-col gap-1">
 					<span className="eyebrow">
 						{mode === 'signin' ? 'welcome back' : 'create account'}
 					</span>
-					<h1 className="text-2xl font-bold">
+					<h1 className="font-bold text-2xl">
 						{mode === 'signin' ? 'Sign in' : 'Sign up'}
 					</h1>
 				</div>

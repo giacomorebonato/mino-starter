@@ -23,7 +23,7 @@ export function NoteForm() {
 	}
 
 	return (
-		<form className="flex flex-col gap-3 max-w-sm" onSubmit={onSubmit}>
+		<form className="flex max-w-sm flex-col gap-3" onSubmit={onSubmit}>
 			<input
 				className="input input-bordered w-full"
 				placeholder="Title"
@@ -32,7 +32,7 @@ export function NoteForm() {
 				required
 			/>
 			<textarea
-				className="textarea textarea-bordered w-full min-h-24"
+				className="textarea textarea-bordered min-h-24 w-full"
 				placeholder="Content"
 				value={content}
 				onChange={(e) => setContent(e.target.value)}

@@ -37,6 +37,7 @@ See `.env.example`. Required:
 ## Conventions
 
 - Root dirs: `frontend/`, `backend/`, `shared/`, `prisma/`. No `src/`.
+- TypeScript filenames: kebab-case (e.g. `note-list.tsx`, not `NoteList.tsx`). React component identifiers stay PascalCase; only file names are kebab-case.
 - Path aliases: `@backend/*`, `@frontend/*`, `@shared/*` (see `tsconfig.json`).
 - Nested `__tests__/` for unit tests.
 - No vendor-specific filenames (e.g. `CLAUDE.md`). Use `AGENTS.md`.

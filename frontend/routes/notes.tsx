@@ -1,6 +1,6 @@
-import { AppShell } from '@frontend/components/AppShell'
-import { NoteForm } from '@frontend/components/NoteForm'
-import { NoteList } from '@frontend/components/NoteList'
+import { AppShell } from '@frontend/components/app-shell'
+import { NoteForm } from '@frontend/components/note-form'
+import { NoteList } from '@frontend/components/note-list'
 import { authClient } from '@frontend/lib/auth'
 
 export function NotesRoute() {
@@ -17,7 +17,7 @@ export function NotesRoute() {
 					}
 				>
 					Sign out
-					<span className="hidden sm:inline opacity-60">
+					<span className="hidden opacity-60 sm:inline">
 						· {session?.user.email}
 					</span>
 				</button>
@@ -26,7 +26,7 @@ export function NotesRoute() {
 			<div className="flex flex-col gap-6">
 				<div className="flex flex-col gap-1">
 					<span className="eyebrow">demo route</span>
-					<h1 className="text-2xl font-bold">Notes</h1>
+					<h1 className="font-bold text-2xl">Notes</h1>
 				</div>
 				<NoteForm />
 				<NoteList />

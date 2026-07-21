@@ -20,7 +20,7 @@ export function NoteList() {
 			{data?.map((note) => (
 				<li
 					key={note.id}
-					className="card bg-base-200 border border-base-300 p-4 flex justify-between items-start gap-4"
+					className="card flex items-start justify-between gap-4 border border-base-300 bg-base-200 p-4"
 				>
 					<div>
 						<div className="font-bold">{note.title}</div>
