@@ -7,3 +7,5 @@ prisma/test.db
 prisma/*.db-journal
 .env
 .fly/
+test-results/
+playwright-report/
