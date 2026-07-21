@@ -9,3 +9,7 @@ prisma/*.db-journal
 .fly/
 test-results/
 playwright-report/
+
+
+# APM dependencies
+apm_modules/

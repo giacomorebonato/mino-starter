@@ -1,0 +1,29 @@
+lockfile_version: '1'
+generated_at: '2026-07-21T11:51:23.270673+00:00'
+apm_version: 0.20.0
+dependencies:
+- repo_url: anthropics/skills
+  host: github.com
+  resolved_commit: fa0fa64bdc967915dc8399e803be67759e1e62b8
+  virtual_path: skills/frontend-design
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/frontend-design
+  - .agents/skills/frontend-design/LICENSE.txt
+  - .agents/skills/frontend-design/SKILL.md
+  deployed_file_hashes:
+    .agents/skills/frontend-design/LICENSE.txt: sha256:0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594
+    .agents/skills/frontend-design/SKILL.md: sha256:1608ea77fbb6fc30d13a97d12cfa8ebf31358d40f0dd97beed24829d6b3f45dd
+  content_hash: sha256:4eabc66183767153e404b39d1b839b1c37f2d82d86f0a0d7e880a579d8d62336
+mcp_servers:
+- io.github.github/github-mcp-server
+- io.github.microsoft/playwright-mcp
+- io.prisma/mcp
+mcp_configs:
+  io.github.github/github-mcp-server:
+    name: io.github.github/github-mcp-server
+  io.github.microsoft/playwright-mcp:
+    name: io.github.microsoft/playwright-mcp
+  io.prisma/mcp:
+    name: io.prisma/mcp

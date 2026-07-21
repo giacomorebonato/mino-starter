@@ -15,4 +15,6 @@ Reusable full-stack starter: Bun + React + tRPC + better-auth + Prisma + daisyUI
 - `bun run db:migrate` — prisma migrate dev
 - `bun run db:reset` — prisma migrate reset
 
+Run `apm install` to install the skills/MCP declared in `apm.yml`.
+
 See `AGENTS.md` for agent context.

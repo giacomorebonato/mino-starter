@@ -1,0 +1,51 @@
+# AGENTS.md
+
+## Stack
+
+- Runtime/package manager/bundler/test runner: Bun
+- Frontend: React 19 SPA, TanStack Router, TanStack Query, tRPC (`@trpc/tanstack-react-query`), daisyUI v5 + Tailwind v4
+- Backend: Bun.serve fullstack server, tRPC v11 fetch adapter, better-auth (Prisma adapter, email/password only)
+- DB: Prisma + SQLite
+- Lint/format: Biome (no semicolons, trailing comma all, single quotes)
+- E2E: Playwright
+- Agent context: APM (`apm.yml`) — run `apm install`
+
+## Scripts
+
+See `package.json` scripts. Key:
+
+- `bun run dev` — dev server with HMR (`bun --hot backend/server.ts`)
+- `bun run build` — production bundle (`bun build frontend/index.html --outdir dist --production && bun run scripts/prod-css.ts`)
+- `bun run start` — production server (`NODE_ENV=production bun backend/server.ts`)
+- `bun test` — unit tests (`bun test backend`)
+- `bun run test:e2e` — Playwright E2E
+- `bun run lint` — Biome check
+- `bun run format` — Biome format
+- `bun run typecheck` — `tsc --noEmit`
+- `bun run db:migrate` — `prisma migrate dev`
+- `bun run db:reset` — `prisma migrate reset`
+
+## Env vars
+
+See `.env.example`. Required:
+
+- `DATABASE_URL` — e.g. `file:./dev.db` (dev), `file:./test.db` (E2E test DB)
+- `BETTER_AUTH_SECRET`
+- `BETTER_AUTH_URL` — e.g. `http://localhost:3000`
+- `PORT` — e.g. `3000`
+
+## Conventions
+
+- Root dirs: `frontend/`, `backend/`, `shared/`, `prisma/`. No `src/`.
+- Path aliases: `@backend/*`, `@frontend/*`, `@shared/*` (see `tsconfig.json`).
+- Nested `__tests__/` for unit tests.
+- No vendor-specific filenames (e.g. `CLAUDE.md`). Use `AGENTS.md`.
+- Auth base path: `/api/auth` (configured in `backend/auth/auth.ts`).
+- tRPC endpoint: `/api/trpc` (configured in `backend/server.ts`).
+- SPA client routes: `/`, `/login`, `/notes`.
+- `Context` type flows from `backend/trpc/context.ts` → `backend/trpc/root.ts` → `shared/trpc.ts` → `frontend/lib/trpc.ts`.
+- Dockerfile exists; prod image runs `bunx prisma migrate deploy && bun run backend/server.ts` with `DATABASE_URL=file:/data/prod.db`.
+
+## Skills/MCP
+
+Run `apm install` to install the frontend-design skill, Playwright MCP, GitHub MCP, and Prisma MCP declared in `apm.yml`.
