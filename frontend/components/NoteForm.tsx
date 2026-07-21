@@ -23,23 +23,23 @@ export function NoteForm() {
 	}
 
 	return (
-		<form className="flex flex-col gap-2 max-w-sm" onSubmit={onSubmit}>
+		<form className="flex flex-col gap-3 max-w-sm" onSubmit={onSubmit}>
 			<input
-				className="input"
+				className="input input-bordered w-full"
 				placeholder="Title"
 				value={title}
 				onChange={(e) => setTitle(e.target.value)}
 				required
 			/>
 			<textarea
-				className="textarea"
+				className="textarea textarea-bordered w-full min-h-24"
 				placeholder="Content"
 				value={content}
 				onChange={(e) => setContent(e.target.value)}
 				required
 			/>
 			<button
-				className="btn btn-primary"
+				className="btn btn-primary w-full"
 				type="submit"
 				disabled={create.isPending}
 			>

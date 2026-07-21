@@ -25,14 +25,14 @@ export function AuthForm({ mode }: { mode: 'signin' | 'signup' }) {
 		<form className="flex flex-col gap-2 max-w-sm" onSubmit={onSubmit}>
 			{mode === 'signup' && (
 				<input
-					className="input"
+					className="input input-bordered w-full"
 					placeholder="Name"
 					value={name}
 					onChange={(e) => setName(e.target.value)}
 				/>
 			)}
 			<input
-				className="input"
+				className="input input-bordered w-full"
 				type="email"
 				placeholder="Email"
 				value={email}
@@ -40,7 +40,7 @@ export function AuthForm({ mode }: { mode: 'signin' | 'signup' }) {
 				required
 			/>
 			<input
-				className="input"
+				className="input input-bordered w-full"
 				type="password"
 				placeholder="Password"
 				value={password}
@@ -48,7 +48,7 @@ export function AuthForm({ mode }: { mode: 'signin' | 'signup' }) {
 				required
 			/>
 			{error && <div className="text-error">{error}</div>}
-			<button className="btn btn-primary" type="submit">
+			<button className="btn btn-primary w-full" type="submit">
 				{mode === 'signin' ? 'Sign in' : 'Sign up'}
 			</button>
 		</form>

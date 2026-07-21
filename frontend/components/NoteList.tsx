@@ -20,7 +20,7 @@ export function NoteList() {
 			{data?.map((note) => (
 				<li
 					key={note.id}
-					className="card bg-base-200 shadow p-4 flex justify-between items-center"
+					className="card bg-base-200 border border-base-300 p-4 flex justify-between items-start gap-4"
 				>
 					<div>
 						<div className="font-bold">{note.title}</div>
@@ -28,7 +28,7 @@ export function NoteList() {
 					</div>
 					<button
 						type="button"
-						className="btn btn-error btn-sm"
+						className="btn btn-ghost btn-sm btn-error"
 						onClick={() => del.mutate({ id: note.id })}
 						disabled={del.isPending}
 					>
