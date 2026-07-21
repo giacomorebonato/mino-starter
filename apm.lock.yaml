@@ -1,7 +1,132 @@
 lockfile_version: '1'
-generated_at: '2026-07-21T11:51:23.270673+00:00'
+generated_at: '2026-07-21T15:00:21.995283+00:00'
 apm_version: 0.20.0
 dependencies:
+- repo_url: DeckardGer/tanstack-agent-skills
+  host: github.com
+  resolved_commit: 0e8bcdc6af4959739e0f6a2dfb35dc70d513940a
+  package_type: skill_bundle
+  deployed_files:
+  - .agents/skills/tanstack-integration
+  - .agents/skills/tanstack-integration/SKILL.md
+  - .agents/skills/tanstack-integration/rules/cache-single-source.md
+  - .agents/skills/tanstack-integration/rules/flow-loader-query-pattern.md
+  - .agents/skills/tanstack-integration/rules/setup-query-client-context.md
+  - .agents/skills/tanstack-integration/rules/ssr-dehydrate-hydrate.md
+  - .agents/skills/tanstack-query
+  - .agents/skills/tanstack-query/SKILL.md
+  - .agents/skills/tanstack-query/rules/cache-gc-time.md
+  - .agents/skills/tanstack-query/rules/cache-invalidation.md
+  - .agents/skills/tanstack-query/rules/cache-placeholder-vs-initial.md
+  - .agents/skills/tanstack-query/rules/cache-stale-time.md
+  - .agents/skills/tanstack-query/rules/err-error-boundaries.md
+  - .agents/skills/tanstack-query/rules/inf-page-params.md
+  - .agents/skills/tanstack-query/rules/mut-invalidate-queries.md
+  - .agents/skills/tanstack-query/rules/mut-mutation-state.md
+  - .agents/skills/tanstack-query/rules/mut-optimistic-updates.md
+  - .agents/skills/tanstack-query/rules/network-mode.md
+  - .agents/skills/tanstack-query/rules/parallel-use-queries.md
+  - .agents/skills/tanstack-query/rules/perf-select-transform.md
+  - .agents/skills/tanstack-query/rules/persist-queries.md
+  - .agents/skills/tanstack-query/rules/pf-intent-prefetch.md
+  - .agents/skills/tanstack-query/rules/qk-array-structure.md
+  - .agents/skills/tanstack-query/rules/qk-factory-pattern.md
+  - .agents/skills/tanstack-query/rules/qk-hierarchical-organization.md
+  - .agents/skills/tanstack-query/rules/qk-include-dependencies.md
+  - .agents/skills/tanstack-query/rules/qk-serializable.md
+  - .agents/skills/tanstack-query/rules/query-cancellation.md
+  - .agents/skills/tanstack-query/rules/ssr-dehydration.md
+  - .agents/skills/tanstack-router
+  - .agents/skills/tanstack-router/SKILL.md
+  - .agents/skills/tanstack-router/rules/ctx-root-context.md
+  - .agents/skills/tanstack-router/rules/err-not-found.md
+  - .agents/skills/tanstack-router/rules/load-ensure-query-data.md
+  - .agents/skills/tanstack-router/rules/load-parallel.md
+  - .agents/skills/tanstack-router/rules/load-use-loaders.md
+  - .agents/skills/tanstack-router/rules/nav-link-component.md
+  - .agents/skills/tanstack-router/rules/nav-route-masks.md
+  - .agents/skills/tanstack-router/rules/org-virtual-routes.md
+  - .agents/skills/tanstack-router/rules/preload-intent.md
+  - .agents/skills/tanstack-router/rules/router-default-options.md
+  - .agents/skills/tanstack-router/rules/search-custom-serializer.md
+  - .agents/skills/tanstack-router/rules/search-validation.md
+  - .agents/skills/tanstack-router/rules/split-lazy-routes.md
+  - .agents/skills/tanstack-router/rules/ts-register-router.md
+  - .agents/skills/tanstack-router/rules/ts-use-from-param.md
+  - .agents/skills/tanstack-start
+  - .agents/skills/tanstack-start/SKILL.md
+  - .agents/skills/tanstack-start/rules/api-routes.md
+  - .agents/skills/tanstack-start/rules/auth-route-protection.md
+  - .agents/skills/tanstack-start/rules/auth-session-management.md
+  - .agents/skills/tanstack-start/rules/deploy-adapters.md
+  - .agents/skills/tanstack-start/rules/env-functions.md
+  - .agents/skills/tanstack-start/rules/err-server-errors.md
+  - .agents/skills/tanstack-start/rules/file-separation.md
+  - .agents/skills/tanstack-start/rules/mw-request-middleware.md
+  - .agents/skills/tanstack-start/rules/sf-create-server-fn.md
+  - .agents/skills/tanstack-start/rules/sf-input-validation.md
+  - .agents/skills/tanstack-start/rules/ssr-hydration-safety.md
+  - .agents/skills/tanstack-start/rules/ssr-prerender.md
+  - .agents/skills/tanstack-start/rules/ssr-streaming.md
+  deployed_file_hashes:
+    .agents/skills/tanstack-integration/SKILL.md: sha256:b4e30f8e81387374a4259578c84a3dc258e2615394328099b0d190e03840e47e
+    .agents/skills/tanstack-integration/rules/cache-single-source.md: sha256:7b0dcb53f1652e4f1930883e8dcf95f10661bf5096295eb789a413e2a7971383
+    .agents/skills/tanstack-integration/rules/flow-loader-query-pattern.md: sha256:45056d8132e69e87ee7b1d791a1f9c90e14f0dcc92161f403730cfa5fb25485e
+    .agents/skills/tanstack-integration/rules/setup-query-client-context.md: sha256:d1f33519b17413cbcf73c662873852826c75d99ca5ff6ac11d9685be6aef906c
+    .agents/skills/tanstack-integration/rules/ssr-dehydrate-hydrate.md: sha256:21b1f26d1fe723dc087fef9dcfdaf3c7236c400001cdb62c5c7ce26b23bb3178
+    .agents/skills/tanstack-query/SKILL.md: sha256:410d81ee0451a56724f76e119cafb5570ac560848b3de6429e23f3f6443e3d44
+    .agents/skills/tanstack-query/rules/cache-gc-time.md: sha256:d25ac7d7c3f5f5a646e0c15b76724bfa910746623df2045429ef3d8c898ef816
+    .agents/skills/tanstack-query/rules/cache-invalidation.md: sha256:ffa153b567a74d28811e8a2960a0adb42ad59eb30925bcbd7cc0f3a0877fdbe5
+    .agents/skills/tanstack-query/rules/cache-placeholder-vs-initial.md: sha256:d2cb14ea48196481a731535af287b8f634d39217b102b10a8b5d562e55738315
+    .agents/skills/tanstack-query/rules/cache-stale-time.md: sha256:b006949c167d3141ec818856761e24e1af40a4cf57a573e3db799edb9f6a27b4
+    .agents/skills/tanstack-query/rules/err-error-boundaries.md: sha256:c323c6029c131c8ccbd7fe0b7a89c9877c63e7b4f9134cd1bc95c2b3447a4f47
+    .agents/skills/tanstack-query/rules/inf-page-params.md: sha256:e4c5c0909f8b3d3cb60cb682e8cff1c395b070351cea7c7e1b76d6710248740e
+    .agents/skills/tanstack-query/rules/mut-invalidate-queries.md: sha256:cbfe273ac0a952972105d13f85fedd418ca06e146101317f2c3bb06ab1782c45
+    .agents/skills/tanstack-query/rules/mut-mutation-state.md: sha256:cefd47db3ce551549e41370fc5f4ea88f465d7aa20703b69a80d8bcfe60c8f50
+    .agents/skills/tanstack-query/rules/mut-optimistic-updates.md: sha256:ee7feac30d6267349c54794f7ec32bf90d5d8472a906cf79588f4ccb163e0c48
+    .agents/skills/tanstack-query/rules/network-mode.md: sha256:5c49f1335aaa233f615702652f9b933419a2c47e6abc6be247fd4da586cce3a7
+    .agents/skills/tanstack-query/rules/parallel-use-queries.md: sha256:c9cff9289ff424de1522f4bd0647a743ee92c2c90127c8003a84fb5e834358b4
+    .agents/skills/tanstack-query/rules/perf-select-transform.md: sha256:b6d5d491cabd50502edfb77f9588d9d237d2359df2f2b91a30ca03a4c43f77fe
+    .agents/skills/tanstack-query/rules/persist-queries.md: sha256:ca547f06055b01ef790c0c38e9cb0d5637b1c2c0d6b849170c4a476552c3768f
+    .agents/skills/tanstack-query/rules/pf-intent-prefetch.md: sha256:1e80133dded98ed5018fc38db3de6589a14b47cb7f98ce5c157acd2823127d6d
+    .agents/skills/tanstack-query/rules/qk-array-structure.md: sha256:b870e3c29c4af8e1aaf97110d0a9e5f6496ede75882e7909ee33f83b1bbd89e8
+    .agents/skills/tanstack-query/rules/qk-factory-pattern.md: sha256:59deab3ffa4e4def16a8aff217afd573b1e64a8f965e5dfb19a163999f6f0b63
+    .agents/skills/tanstack-query/rules/qk-hierarchical-organization.md: sha256:e8c2b9133374743e98d88c92e73aba32e61365ddf07eb38714c81ff7cdfb1134
+    .agents/skills/tanstack-query/rules/qk-include-dependencies.md: sha256:60067bc8cfa26da49a6e022b3133f646aaa26960b722934240fe189d005b61d7
+    .agents/skills/tanstack-query/rules/qk-serializable.md: sha256:e5fe0734defea0e765893ae2fd9bb26fab3849725a7f1cd5402f2d8d46a84129
+    .agents/skills/tanstack-query/rules/query-cancellation.md: sha256:c6948a75a680985df7b44f2b424df4e80d0653cef244826fffd98db10052e8fa
+    .agents/skills/tanstack-query/rules/ssr-dehydration.md: sha256:e9714ad4f67becd8fb2e82f32044d2429db11eabb0ea0047215086afb9f976c2
+    .agents/skills/tanstack-router/SKILL.md: sha256:26916dbfbe39756c94b991827174aa09aa2f6c6ca05cd78d6cdb8b53da93382b
+    .agents/skills/tanstack-router/rules/ctx-root-context.md: sha256:678ea466820f4161e43c3515167b845e21487a1b7b748a9e59ea7c23f8b40672
+    .agents/skills/tanstack-router/rules/err-not-found.md: sha256:44628dbd8baa8e25fde9fe3a55f478d9cac9afb7a4bdd5c1e834a85a658daa60
+    .agents/skills/tanstack-router/rules/load-ensure-query-data.md: sha256:6cb40748f915a64058dbcaf33aadf080f7a2b9324b2c6e4c1e127dcb71259edf
+    .agents/skills/tanstack-router/rules/load-parallel.md: sha256:9f9357380d0df5a1a3c3da1b8c5f15ad056842a436467be3ab33e097612f0185
+    .agents/skills/tanstack-router/rules/load-use-loaders.md: sha256:2804995a36ab6fbdee628ce73c9c72148b8c010117620adcbfeb9bb163366fd7
+    .agents/skills/tanstack-router/rules/nav-link-component.md: sha256:a8ed634f01d280e46c8552020e4abab1fa2ad53655329bb71648cfa956f287d1
+    .agents/skills/tanstack-router/rules/nav-route-masks.md: sha256:f31a9119bd67cbe6733e27e9e56072e32fd2da3cab19bc248a04aab773795fbc
+    .agents/skills/tanstack-router/rules/org-virtual-routes.md: sha256:3cc24ad6357efec189872bc7c4cff267357da4ac888d83fe50a9bc013a1b8880
+    .agents/skills/tanstack-router/rules/preload-intent.md: sha256:3b6b7b579dd8b519101a3d7b1461d6e6cf0d7e6b28cae87d5adf422212b05259
+    .agents/skills/tanstack-router/rules/router-default-options.md: sha256:870e2976be4d71a5a32c29240ad4d6bf58fab97b149f4606174970d91f0fa0f6
+    .agents/skills/tanstack-router/rules/search-custom-serializer.md: sha256:d8e6335e6ae8b33955f7e08cb2ff63767936897fec3f7f7db1e03aae217fda14
+    .agents/skills/tanstack-router/rules/search-validation.md: sha256:e83d656bc9c60c7ec088ad8d0044c77f5b602384973ad2573ae2022b0c7e20a9
+    .agents/skills/tanstack-router/rules/split-lazy-routes.md: sha256:9a46b3f07de29b4f9c5424be1a2483549bc3c14bef299cd6f42f3b66549ee399
+    .agents/skills/tanstack-router/rules/ts-register-router.md: sha256:5ecba212565a6e9125378aa1d1ee04fcd7ef081050eb00787c674565353eea25
+    .agents/skills/tanstack-router/rules/ts-use-from-param.md: sha256:ff9ef42c135d2909f9a23c9659d86c0b0fb4d27d298fc8795af96a959ed05077
+    .agents/skills/tanstack-start/SKILL.md: sha256:9fc7b6f7733d53b3b86e6bcd50070499afad6dbaa03665587900ef717c60e75a
+    .agents/skills/tanstack-start/rules/api-routes.md: sha256:7488520b9701afdf355b3ff04a2300562162a4105d8e5badf5756122f9f9dc47
+    .agents/skills/tanstack-start/rules/auth-route-protection.md: sha256:e3a57579371390d06f3d90355667b4829b12f8fec7621891cdf2a6990ccc2566
+    .agents/skills/tanstack-start/rules/auth-session-management.md: sha256:ab1dc9bc1abaffed787eb7a46e9182961d25834488a675483a9f1c9193831353
+    .agents/skills/tanstack-start/rules/deploy-adapters.md: sha256:24975581a6e2e6b19a12739be808eb8d0ca7b216694252ef75ad6d79e74d7568
+    .agents/skills/tanstack-start/rules/env-functions.md: sha256:730259bdc5bd3c2c061790c1ff3b212fe00f5feea838adc1d3814bb297af65c9
+    .agents/skills/tanstack-start/rules/err-server-errors.md: sha256:f1c3d3fe71c52149c7a4c69f9c9995325a0851667ad1ca811b1137c73d3706fb
+    .agents/skills/tanstack-start/rules/file-separation.md: sha256:0b9631f14c8d3166931ec9dcdffad2d66c16f27c84f34eaa831e315e47ab9c98
+    .agents/skills/tanstack-start/rules/mw-request-middleware.md: sha256:a484088c4b6d3cdcbc6bc640743ada8112325c25b5da0fca786f26fc42088205
+    .agents/skills/tanstack-start/rules/sf-create-server-fn.md: sha256:7330b47f29c1a2b2be4ed7254f8d80aeb73952829ccbdaeec98ed0056cb0e36e
+    .agents/skills/tanstack-start/rules/sf-input-validation.md: sha256:d8708e370684cda30dc11a93ae60e8ac715dce4d40692d3b17a6913e183a5eba
+    .agents/skills/tanstack-start/rules/ssr-hydration-safety.md: sha256:604f37d14ff36bc58082598fed54deb1bc00ece33ac09e06372346e4812a2a8b
+    .agents/skills/tanstack-start/rules/ssr-prerender.md: sha256:aff608488ce599b539c1db2d205cc2d042218399e318576afe5b35471f030c1e
+    .agents/skills/tanstack-start/rules/ssr-streaming.md: sha256:ef7b69623967b1a6313b91a09a9d2ceb310a6775e088777efd36b2f16d409356
+  content_hash: sha256:2560a9a424e2a42a9bac2fcdc860642f4cacc276ef330de7e94c2c8251662e0c
 - repo_url: anthropics/skills
   host: github.com
   resolved_commit: fa0fa64bdc967915dc8399e803be67759e1e62b8
@@ -19,11 +144,14 @@ dependencies:
 mcp_servers:
 - io.github.github/github-mcp-server
 - io.github.microsoft/playwright-mcp
+- io.github.upstash/context7
 - io.prisma/mcp
 mcp_configs:
   io.github.github/github-mcp-server:
     name: io.github.github/github-mcp-server
   io.github.microsoft/playwright-mcp:
     name: io.github.microsoft/playwright-mcp
+  io.github.upstash/context7:
+    name: io.github.upstash/context7
   io.prisma/mcp:
     name: io.prisma/mcp

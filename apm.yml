@@ -5,7 +5,9 @@ targets:
 dependencies:
   apm:
     - anthropics/skills/skills/frontend-design
+    - DeckardGer/tanstack-agent-skills
   mcp:
     - io.github.microsoft/playwright-mcp
     - io.github.github/github-mcp-server
     - io.prisma/mcp
+    - io.github.upstash/context7
