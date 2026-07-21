@@ -1,0 +1,40 @@
+{
+	"name": "mino-starter",
+	"type": "module",
+	"private": true,
+	"scripts": {
+		"dev": "bun --hot backend/server.ts",
+		"build": "bun build frontend/index.html --outdir dist --production",
+		"start": "NODE_ENV=production bun backend/server.ts",
+		"test": "bun test",
+		"test:e2e": "playwright test",
+		"lint": "biome check .",
+		"format": "biome format --write .",
+		"typecheck": "tsc --noEmit",
+		"db:migrate": "prisma migrate dev",
+		"db:reset": "prisma migrate reset"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.5.4",
+		"@playwright/test": "^1.61.1",
+		"@types/bun": "latest",
+		"@types/react": "^19.2.17",
+		"@types/react-dom": "^19.2.3",
+		"daisyui": "^5.7.0",
+		"prisma": "^7.9.0",
+		"tailwindcss": "^4.3.3",
+		"typescript": "^7.0.2"
+	},
+	"dependencies": {
+		"@prisma/client": "^7.9.0",
+		"@tanstack/react-query": "^5.101.3",
+		"@tanstack/react-router": "^1.170.18",
+		"@trpc/client": "^11.18.0",
+		"@trpc/server": "^11.18.0",
+		"@trpc/tanstack-react-query": "^11.18.0",
+		"better-auth": "^1.6.23",
+		"react": "^19.2.7",
+		"react-dom": "^19.2.7",
+		"zod": "^4.4.3"
+	}
+}
