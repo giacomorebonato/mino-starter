@@ -6,6 +6,7 @@
 			"!.pi-subagents",
 			"!.superpowers",
 			"!dist",
+			"!test-results",
 			"!node_modules"
 		]
 	},
