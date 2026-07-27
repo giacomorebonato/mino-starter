@@ -1,3 +1,4 @@
+import { useUIStore } from '@frontend/stores/ui-store'
 import type { ReactNode } from 'react'
 
 /**
@@ -12,6 +13,9 @@ export function AppShell({
 	children: ReactNode
 	actions?: ReactNode
 }) {
+	const compact = useUIStore((state) => state.compact)
+	const toggleCompact = useUIStore((state) => state.toggleCompact)
+
 	return (
 		<div className="flex min-h-screen flex-col">
 			<header className="app-bar sticky top-0 z-10">
@@ -23,10 +27,23 @@ export function AppShell({
 						</span>
 						<span className="eyebrow hidden sm:inline">starter kit</span>
 					</a>
-					{actions && <div className="flex items-center gap-2">{actions}</div>}
+					<div className="flex items-center gap-2">
+						<button
+							type="button"
+							className="btn btn-ghost btn-sm"
+							onClick={toggleCompact}
+							aria-pressed={compact}
+							title="Toggle compact mode (Zustand store demo)"
+						>
+							{compact ? 'Compact' : 'Cozy'}
+						</button>
+						{actions}
+					</div>
 				</div>
 			</header>
-			<main className="mx-auto w-full max-w-3xl flex-1 px-6 py-8">
+			<main
+				className={`mx-auto w-full max-w-3xl flex-1 px-6 ${compact ? 'py-4' : 'py-8'}`}
+			>
 				{children}
 			</main>
 		</div>
