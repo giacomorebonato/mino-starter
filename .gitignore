@@ -15,3 +15,6 @@ playwright-report/
 
 # APM dependencies
 apm_modules/
+
+# Prisma generated client (Rust-free generator)
+prisma/generated/

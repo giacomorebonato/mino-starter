@@ -6,6 +6,7 @@
 			"!.pi-subagents",
 			"!.superpowers",
 			"!dist",
+			"!prisma/generated",
 			"!test-results",
 			"!node_modules"
 		]

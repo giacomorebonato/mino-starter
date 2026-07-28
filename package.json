@@ -12,7 +12,8 @@
 		"format": "biome format --write .",
 		"typecheck": "tsc --noEmit",
 		"db:migrate": "prisma migrate dev",
-		"db:reset": "prisma migrate reset"
+		"db:reset": "prisma migrate reset",
+		"postinstall": "prisma generate"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.5.4",
@@ -40,6 +41,7 @@
 		"@trpc/server": "11.18.0",
 		"@trpc/tanstack-react-query": "11.18.0",
 		"better-auth": "1.6.23",
+		"prisma-adapter-bun-sqlite": "^0.8.0",
 		"react": "19.2.7",
 		"react-dom": "19.2.7",
 		"zod": "4.4.3"

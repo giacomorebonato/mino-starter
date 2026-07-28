@@ -21,4 +21,4 @@ ENV NODE_ENV=production
 ENV DATABASE_URL=file:/data/prod.db
 ENV PORT=3000
 EXPOSE 3000
-CMD ["sh", "-c", "bunx prisma migrate deploy && bun run backend/server.ts"]
+CMD ["sh", "-c", "./node_modules/.bin/prisma migrate deploy && bun run backend/server.ts"]

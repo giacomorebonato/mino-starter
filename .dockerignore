@@ -9,3 +9,5 @@ e2e
 *.md
 Dockerfile
 fly.toml
+prisma/*.db
+prisma/*.db-journal

@@ -1,5 +1,8 @@
 generator client {
-  provider = "prisma-client-js"
+  provider   = "prisma-client"
+  engineType = "client"
+  runtime    = "bun"
+  output     = "./generated"
 }
 
 datasource db {
