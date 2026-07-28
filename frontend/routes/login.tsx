@@ -31,7 +31,7 @@ export function LoginRoute() {
 						Sign up
 					</button>
 				</div>
-				<AuthForm mode={mode} />
+				<AuthForm key={mode} mode={mode} />
 			</div>
 		</AppShell>
 	)

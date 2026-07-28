@@ -1,3 +1,4 @@
+import { AppDevtools } from '@frontend/components/devtools'
 import { TRPCProvider } from '@frontend/lib/trpc'
 import { RouterProvider, router } from '@frontend/router'
 import type { AppRouter } from '@shared/trpc'
@@ -17,6 +18,7 @@ createRoot(root).render(
 	<QueryClientProvider client={queryClient}>
 		<TRPCProvider trpcClient={trpcClient} queryClient={queryClient}>
 			<RouterProvider router={router} />
+			<AppDevtools router={router} />
 		</TRPCProvider>
 	</QueryClientProvider>,
 )

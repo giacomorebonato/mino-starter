@@ -45,6 +45,19 @@
 			}
 		},
 		{
+			"includes": [
+				"frontend/components/note-form.tsx",
+				"frontend/components/auth-form.tsx"
+			],
+			"linter": {
+				"rules": {
+					"correctness": {
+						"noChildrenProp": "off"
+					}
+				}
+			}
+		},
+		{
 			"includes": ["e2e/**/*.ts", "playwright.config.ts"],
 			"linter": {
 				"rules": {
