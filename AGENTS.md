@@ -15,7 +15,7 @@
 See `package.json` scripts. Key:
 
 - `bun run dev` — dev server with HMR (`bun --hot backend/server.ts`)
-- `bun run build` — production bundle (`bun build frontend/index.html --outdir dist --production && bun run scripts/prod-css.ts`)
+- `bun run build` — production bundle (`scripts/build.ts` via `Bun.build` with a prod devtools-stub plugin + Tailwind CSS compile via `scripts/prod-css.ts`)
 - `bun run start` — production server (`NODE_ENV=production bun backend/server.ts`)
 - `bun test` — unit tests (`bun test backend`)
 - `bun run test:e2e` — Playwright E2E
@@ -44,7 +44,7 @@ See `.env.example`. Required:
 - Client state: React `useState`/`useReducer` for local UI state. Server state stays in TanStack Query — don't duplicate. If shared client state is needed later, add a single Zustand store under `frontend/stores/` with a `createStore()` factory wrapping `devtools` middleware.
 - Forms: TanStack Form (`useForm`) with Zod schemas passed directly to `validators` (Standard Schema native support — no `@tanstack/zod-form-adapter`). Render fields via `form.Field` render-prop and submit state via `form.Subscribe`.
 - Shared validation schemas live in `shared/schemas/` and are reused by both frontend forms and backend tRPC inputs (single source of truth — e.g. `noteSchema` in `backend/trpc/notes.ts`).
-- Devtools: unified TanStack devtools shell at `frontend/components/devtools.tsx`, mounted once in `main.tsx`. Dev-only: gated on `import.meta.env.DEV` + lazy `import()` so the prod bundle excludes devtools. Panels: Query, Router, Form.
+- Devtools: unified TanStack devtools shell at `frontend/components/devtools.tsx`, mounted once in `main.tsx`. Dev-only: gated on `process.env.NODE_ENV` (Bun folds it; `import.meta.env` is not shimmed in the browser bundle and will throw) + lazy `import()`. Bun's bundler does not tree-shake dead dynamic imports, so `scripts/build.ts` registers a `Bun.build` plugin that redirects the four `@tanstack/*-devtools` packages to a no-op stub (`frontend/components/devtools-stub.ts`) in the prod bundle — keeps the libs (~270KB) out of the prod JS. Panels: Query, Router, Form.
 - Biome `noChildrenProp` is disabled for `frontend/components/note-form.tsx` and `frontend/components/auth-form.tsx` (TanStack Form's `form.Field`/`form.Subscribe` use a children render-prop).
 - Auth base path: `/api/auth` (configured in `backend/auth/auth.ts`).
 - tRPC endpoint: `/api/trpc` (configured in `backend/server.ts`).
@@ -73,7 +73,7 @@ Target: app `mino-starter` on Fly.io. Infra files live in repo: `Dockerfile` (mu
 - **Redeploy** (update code, keep data): `flyctl deploy`.
 - **Replace an existing app** (fresh state, wipes data): `flyctl apps destroy mino-starter` then run the first-deploy steps. The volume must be recreated.
 - **Open**: `flyctl apps open` → `https://mino-starter.fly.dev`.
-- **Caveats**: single-machine only (SQLite volume). `better-auth` sessions rely on `BETTER_AUTH_SECRET` — rotating it logs out all users. Devtools are dev-only (`import.meta.env.DEV`) and excluded from the prod image.
+- **Caveats**: single-machine only (SQLite volume). `better-auth` sessions rely on `BETTER_AUTH_SECRET` — rotating it logs out all users. Devtools are dev-only and excluded from the prod bundle via the `scripts/build.ts` stub plugin (the `@tanstack/*-devtools` packages are swapped for a no-op at build time).
 
 ## Skills/MCP
 

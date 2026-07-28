@@ -6,7 +6,7 @@ const DevtoolsContent = lazy(() =>
 )
 
 export function AppDevtools({ router }: { router: AnyRouter }) {
-	if (!import.meta.env.DEV) return null
+	if (process.env.NODE_ENV !== 'development') return null
 	return (
 		<Suspense fallback={null}>
 			<DevtoolsContent router={router} />

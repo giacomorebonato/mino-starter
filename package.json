@@ -4,7 +4,7 @@
 	"private": true,
 	"scripts": {
 		"dev": "bun --hot backend/server.ts",
-		"build": "bun build frontend/index.html --outdir dist --production && bun run scripts/prod-css.ts",
+		"build": "bun run scripts/build.ts",
 		"start": "NODE_ENV=production bun backend/server.ts",
 		"test": "bun test backend",
 		"test:e2e": "playwright test",

@@ -1,11 +1,11 @@
 FROM oven/bun:1 AS build
 WORKDIR /app
 COPY package.json bun.lock ./
+COPY prisma ./prisma
 RUN bun install --frozen-lockfile
 COPY . .
 RUN bunx prisma generate
-RUN bun build frontend/index.html --outdir dist --production
-RUN bun run scripts/prod-css.ts
+RUN bun run build
 
 FROM oven/bun:1
 WORKDIR /app
