@@ -3,7 +3,7 @@
 ## Stack
 
 - Runtime/package manager/bundler/test runner: Bun
-- Frontend: React 19 SPA, TanStack Router, TanStack Query, tRPC (`@trpc/tanstack-react-query`), Zustand (client state), daisyUI v5 + Tailwind v4
+- Frontend: React 19 SPA, TanStack Router, TanStack Query, tRPC (`@trpc/tanstack-react-query`), daisyUI v5 + Tailwind v4
 - Backend: Bun.serve fullstack server, tRPC v11 fetch adapter, better-auth (Prisma adapter, email/password only)
 - DB: Prisma + SQLite
 - Lint/format: Biome (no semicolons, trailing comma all, single quotes)
@@ -41,8 +41,7 @@ See `.env.example`. Required:
 - Path aliases: `@backend/*`, `@frontend/*`, `@shared/*` (see `tsconfig.json`).
 - Nested `__tests__/` for unit tests.
 - No vendor-specific filenames (e.g. `CLAUDE.md`). Use `AGENTS.md`.
-- Client state: Zustand stores in `frontend/stores/`. Use `createStore()` factory (wraps `devtools` middleware; enabled when Redux DevTools browser extension is present). Server state stays in TanStack Query — don't duplicate.
-  - Redux DevTools v3.2.x caveat: known MV3 regression affects Zustand (reduxjs/redux-devtools#1731). Store only shows in the panel if the Redux DevTools tab is open BEFORE the page loads. If "No store found": open DevTools → Redux tab, then reload the page while the tab stays open (or right-click extension → "Open in a window", then reload).
+- Client state: React `useState`/`useReducer` for local UI state. Server state stays in TanStack Query — don't duplicate. If shared client state is needed later, add a single Zustand store under `frontend/stores/` with a `createStore()` factory wrapping `devtools` middleware.
 - Auth base path: `/api/auth` (configured in `backend/auth/auth.ts`).
 - tRPC endpoint: `/api/trpc` (configured in `backend/server.ts`).
 - SPA client routes: `/`, `/login`, `/notes`.

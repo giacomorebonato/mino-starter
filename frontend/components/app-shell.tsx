@@ -1,5 +1,4 @@
-import { useUIStore } from '@frontend/stores/ui-store'
-import type { ReactNode } from 'react'
+import { type ReactNode, useState } from 'react'
 
 /**
  * App shell — top bar with the mino-starter wordmark.
@@ -13,8 +12,7 @@ export function AppShell({
 	children: ReactNode
 	actions?: ReactNode
 }) {
-	const compact = useUIStore((state) => state.compact)
-	const toggleCompact = useUIStore((state) => state.toggleCompact)
+	const [compact, setCompact] = useState(false)
 
 	return (
 		<div className="flex min-h-screen flex-col">
@@ -31,9 +29,9 @@ export function AppShell({
 						<button
 							type="button"
 							className="btn btn-ghost btn-sm"
-							onClick={toggleCompact}
+							onClick={() => setCompact((c) => !c)}
 							aria-pressed={compact}
-							title="Toggle compact mode (Zustand store demo)"
+							title="Toggle compact mode"
 						>
 							{compact ? 'Compact' : 'Cozy'}
 						</button>
