@@ -1,4 +1,4 @@
-import { type ReactNode, useState } from 'react'
+import type { ReactNode } from 'react'
 
 /**
  * App shell — top bar with the mino-starter wordmark.
@@ -12,8 +12,6 @@ export function AppShell({
 	children: ReactNode
 	actions?: ReactNode
 }) {
-	const [compact, setCompact] = useState(false)
-
 	return (
 		<div className="flex min-h-screen flex-col">
 			<header className="app-bar sticky top-0 z-10">
@@ -25,23 +23,10 @@ export function AppShell({
 						</span>
 						<span className="eyebrow hidden sm:inline">starter kit</span>
 					</a>
-					<div className="flex items-center gap-2">
-						<button
-							type="button"
-							className="btn btn-ghost btn-sm"
-							onClick={() => setCompact((c) => !c)}
-							aria-pressed={compact}
-							title="Toggle compact mode"
-						>
-							{compact ? 'Compact' : 'Cozy'}
-						</button>
-						{actions}
-					</div>
+					<div className="flex items-center gap-2">{actions}</div>
 				</div>
 			</header>
-			<main
-				className={`mx-auto w-full max-w-3xl flex-1 px-6 ${compact ? 'py-4' : 'py-8'}`}
-			>
+			<main className="mx-auto w-full max-w-3xl flex-1 px-6 py-8">
 				{children}
 			</main>
 		</div>
