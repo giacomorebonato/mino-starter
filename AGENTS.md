@@ -15,7 +15,7 @@
 See `package.json` scripts. Key:
 
 - `bun run dev` — dev server with HMR (`bun --hot backend/server.ts`)
-- `bun run build` — production bundle (`scripts/build.ts` via `Bun.build` with a prod devtools-stub plugin + Tailwind CSS compile via `scripts/prod-css.ts`)
+- `bun run build` — production bundle (`scripts/build.ts` via `Bun.build` with `publicPath: "/"` so hashed JS/CSS links are root-relative and work on all SPA routes, a prod devtools-stub plugin, and Tailwind CSS compile via `scripts/prod-css.ts`)
 - `bun run start` — production server (`NODE_ENV=production bun backend/server.ts`)
 - `bun test` — unit tests (`bun test backend`)
 - `bun run test:e2e` — Playwright E2E

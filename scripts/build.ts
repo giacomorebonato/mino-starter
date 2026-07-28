@@ -36,6 +36,7 @@ const result = await Bun.build({
 	outdir: 'dist',
 	target: 'browser',
 	minify: true,
+	publicPath: '/',
 	define: { 'process.env.NODE_ENV': '"production"' },
 	plugins: [devtoolsStubPlugin],
 })

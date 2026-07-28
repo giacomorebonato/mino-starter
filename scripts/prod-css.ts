@@ -3,7 +3,7 @@ import { $ } from 'bun'
 
 const html = readFileSync('dist/index.html', 'utf8')
 const match = html.match(
-	/<link[^>]*rel=["']stylesheet["'][^>]*href=["']\.\/([^"']+\.css)["'][^>]*>/,
+	/<link[^>]*rel=["']stylesheet["'][^>]*href=["'][^"']*\/([^"']+\.css)["'][^>]*>/,
 )
 if (!match) {
 	throw new Error('No stylesheet link found in dist/index.html')
