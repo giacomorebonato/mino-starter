@@ -22,6 +22,7 @@ See `package.json` scripts. Key:
 - `bun run lint` — Biome check
 - `bun run format` — Biome format
 - `bun run typecheck` — `tsc --noEmit`
+- `bun run knip` — detect unused dependencies, files, and exports (enforced in CI)
 - `bun run db:migrate` — `prisma migrate dev`
 - `bun run db:reset` — `prisma migrate reset`
 
@@ -41,6 +42,7 @@ See `.env.example`. Required:
 - Path aliases: `@backend/*`, `@frontend/*`, `@shared/*` (see `tsconfig.json`).
 - Nested `__tests__/` for unit tests.
 - No vendor-specific filenames (e.g. `CLAUDE.md`). Use `AGENTS.md`.
+- Lint/format: Biome check (`bun run lint`) and Knip (`bun run knip`) both run in CI. Knip fails on unused dependencies, files, or exports. Run `bun run knip` locally before pushing.
 - Client state: React `useState`/`useReducer` for local UI state. Server state stays in TanStack Query — don't duplicate. If shared client state is needed later, add a single Zustand store under `frontend/stores/` with a `createStore()` factory wrapping `devtools` middleware.
 - Forms: TanStack Form (`useForm`) with Zod schemas passed directly to `validators` (Standard Schema native support — no `@tanstack/zod-form-adapter`). Render fields via `form.Field` render-prop and submit state via `form.Subscribe`.
 - Shared validation schemas live in `shared/schemas/` and are reused by both frontend forms and backend tRPC inputs (single source of truth — e.g. `noteSchema` in `backend/trpc/notes.ts`).
