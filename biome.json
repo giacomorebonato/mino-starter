@@ -59,7 +59,11 @@
 			}
 		},
 		{
-			"includes": ["e2e/**/*.ts", "playwright.config.ts"],
+			"includes": [
+				"e2e/**/*.ts",
+				"playwright.config.ts",
+				"playwright.ssr.config.ts"
+			],
 			"linter": {
 				"rules": {
 					"style": {

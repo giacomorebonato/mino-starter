@@ -54,6 +54,20 @@ See `.env.example`. Required:
 - `Context` type flows from `backend/trpc/context.ts` → `backend/trpc/root.ts` → `shared/trpc.ts` → `frontend/lib/trpc.ts`.
 - Dockerfile exists; prod image runs `./node_modules/.bin/prisma migrate deploy && bun run backend/server.ts` with `DATABASE_URL=file:/data/prod.db`.
 
+## Bot SSR (SEO)
+
+Port of `fastify-prerender-plugin` inlined into `backend/ssr/` (no external plugin dep), adapted to `Bun.serve`.
+
+- **Prod-only**: prerender is constructed only when `NODE_ENV === 'production'` (`backend/server.ts`); dev keeps the HTMLBundle routes + HMR and serves the raw shell to everyone.
+- **Flow** (`backend/ssr/prerender.ts` → `createPrerenderHandler`): `GET` + bot UA (`isbot`, plus `facebookexternalhit`/`whatsapp`/`twitterbot`) + path in `PUBLIC_SSR_PATHS` (`shared/ssr-paths.ts`, `(string | RegExp)[]`, strings match pathname, regex tests path+query) → render, else fall through. Runs first in the fetch handler (like the plugin's `onRequest` hook).
+- **Render**: `backend/ssr/request-from-browser.ts` spawns a `worker_thread` that calls `@lightpanda/browser`'s `lightpanda.fetch(url, { dump: true })` (JS API, not the CLI). The binary is provided by `@lightpanda/browser`'s postinstall (`~/.cache/lightpanda-node/lightpanda`, overridable via `LIGHTPANDA_EXECUTABLE_PATH`). Verified to work under Bun's runtime.
+- **Recursion break**: Lightpanda's own requests send `User-Agent: Lightpanda/...`; the handler returns `null` for that UA so the inner request falls through to the raw SPA shell (no re-render loop). No query-param/header hack.
+- **Cache**: per-file on disk, filename = sanitized pathname (+ md5 of query if present) + `.html`, in `SSR_CACHE_DIR` (or a `mkdtemp` dir). 5-minute mtime TTL (matches the plugin). Stale entries are deleted lazily. Write failure is non-fatal.
+- **No bespoke orchestration** (no single-flight / serial queue / fallback) — faithful to the plugin: per-request render. Fits the 512MB Fly VM because bots crawl the single allowlisted path slowly.
+- **Bun note**: `req.url` in `Bun.serve` is the absolute URL (unlike Node/Fastify where `request.url` is path+query), so the handler parses `pathname`+`search` from `req.url` and rebuilds the render URL from `host`/`port` (default `localhost:<PORT>`).
+- Dockerfile copies the lightpanda binary (`/root/.cache/lightpanda-node`) from the build stage where postinstall downloaded it.
+- E2E: `bun run test:e2e:ssr` (separate `playwright.ssr.config.ts` running the prod server, clears its cache in `e2e/global-setup.ts`) is the verification contract. The default `playwright.config.ts` ignores `ssr.spec.ts`.
+
 ## Deployment (Fly.io)
 
 Target: app `mino-starter` on Fly.io. Infra files live in repo: `Dockerfile` (multi-stage Bun build) + `fly.toml` (app, volume mount, http_service).

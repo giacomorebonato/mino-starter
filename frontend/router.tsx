@@ -1,4 +1,5 @@
 import { authClient } from '@frontend/lib/auth'
+import { HomeRoute } from '@frontend/routes/home'
 import { LoginRoute } from '@frontend/routes/login'
 import { NotesRoute } from '@frontend/routes/notes'
 import {
@@ -14,12 +15,10 @@ const rootRoute = createRootRoute({
 	component: () => <Outlet />,
 })
 
-const indexRoute = createRoute({
+const homeRoute = createRoute({
 	getParentRoute: () => rootRoute,
 	path: '/',
-	beforeLoad: () => {
-		throw redirect({ to: '/notes' })
-	},
+	component: HomeRoute,
 })
 
 const loginRoute = createRoute({
@@ -40,7 +39,7 @@ const notesRoute = createRoute({
 	},
 })
 
-const routeTree = rootRoute.addChildren([indexRoute, loginRoute, notesRoute])
+const routeTree = rootRoute.addChildren([homeRoute, loginRoute, notesRoute])
 
 export const router = createRouter({ routeTree, defaultPreload: 'intent' })
 

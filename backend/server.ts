@@ -3,8 +3,10 @@ import {
 	normalizeTrpcRequest,
 	TRPC_ENDPOINT,
 } from '@backend/normalize-trpc-request'
+import { createPrerenderHandler } from '@backend/ssr/prerender'
 import { createContext } from '@backend/trpc/context'
 import { appRouter } from '@backend/trpc/root'
+import { PUBLIC_SSR_PATHS } from '@shared/ssr-paths'
 import { fetchRequestHandler } from '@trpc/server/adapters/fetch'
 
 const isDev = process.env.NODE_ENV !== 'production'
@@ -24,6 +26,17 @@ async function serveDistFile(pathname: string): Promise<Response | null> {
 	return null
 }
 
+// Prod-only bot prerender (port of fastify-prerender-plugin, adapted to Bun.serve).
+// Dev keeps the HTMLBundle routes + HMR; no prerendering.
+let prerender: ReturnType<typeof createPrerenderHandler> | null = null
+if (!isDev) {
+	prerender = createPrerenderHandler({
+		urls: PUBLIC_SSR_PATHS,
+		port,
+		cacheDir: process.env.SSR_CACHE_DIR || undefined,
+	})
+}
+
 const server = Bun.serve({
 	port,
 	...(isDev
@@ -39,6 +52,13 @@ const server = Bun.serve({
 				development: false,
 			}),
 	async fetch(req) {
+		// Bot prerender runs first (like the plugin's onRequest hook). Lightpanda's
+		// own inner requests self-identify via UA and fall through to the SPA shell.
+		if (prerender) {
+			const ssrRes = await prerender.handle(req)
+			if (ssrRes) return ssrRes
+		}
+
 		const url = new URL(req.url)
 		if (!isDev) {
 			const staticFile = await serveDistFile(url.pathname)

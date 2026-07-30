@@ -10,6 +10,7 @@ RUN bun run build
 FROM oven/bun:1
 WORKDIR /app
 COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /root/.cache/lightpanda-node /root/.cache/lightpanda-node
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/backend ./backend
 COPY --from=build /app/shared ./shared
