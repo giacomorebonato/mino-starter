@@ -118,10 +118,11 @@ Until a real public page exists, the test either targets a throwaway public fixt
 
 ## Deployment (Fly)
 
-- `Dockerfile` runtime stage must provide:
-  - The lightpanda binary (from `@lightpanda/browser` postinstall). If the multi-stage copy doesn't carry `~/.cache/lightpanda-node` to runtime, re-run install in the runtime stage or set `LIGHTPANDA_EXECUTABLE_PATH` to an explicit path baked at build time.
-  - Playwright `chromium` browser binaries: `npx playwright install --with-deps chromium` in the runtime stage (~150MB). This is the real footprint cost — larger than lightpanda itself.
+- `Dockerfile` runtime stage must provide both browser binaries:
+  - **Lightpanda binary** — installed by `@lightpanda/browser` postinstall during the build stage's `bun install`, landing in `/root/.cache/lightpanda-node`. The current runtime stage copies `node_modules` but NOT this cache dir, so the binary is lost. Fix: `COPY --from=build /root/.cache/lightpanda-node /root/.cache/lightpanda-node`. Keeps the default path `getExecutablePath()` reads, no env override needed. (Verify the oven/bun image runs as root so `~` = `/root`; if not, set `LIGHTPANDA_EXECUTABLE_PATH` explicitly to the copied path.)
+  - **Playwright `chromium`** — `npx playwright install --with-deps chromium` in the runtime stage (~150MB). This is the real footprint cost — larger than lightpanda itself.
 - Boot order: Bun spawns lightpanda on server boot (single entrypoint `bun run backend/server.ts` handles spawn + SIGTERM cleanup). No separate CMD for lightpanda.
+- Dockerfile CMD stays `prisma migrate deploy && bun run backend/server.ts`; lightpanda spawn happens inside the server boot, not the CMD.
 - `fly.toml` unchanged: volume still only `/data` for the DB. SSR cache is ephemeral `tmpdir`; no new mount.
 - Memory: serial-render cap (above) keeps 512MB viable. Watch OOM risk in first deploys; tune timeout / disable SSR via env if needed.
 
