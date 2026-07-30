@@ -6,6 +6,7 @@ dependencies:
   apm:
     - anthropics/skills/skills/frontend-design
     - DeckardGer/tanstack-agent-skills
+    - saadeghi/daisyui/skills/daisyui
   mcp:
     - io.github.microsoft/playwright-mcp
     - io.github.github/github-mcp-server
