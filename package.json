@@ -6,7 +6,7 @@
 		"dev": "bun --hot backend/server.ts",
 		"build": "bun run scripts/build.ts",
 		"start": "NODE_ENV=production bun backend/server.ts",
-		"test": "bun test backend",
+		"test": "bun test backend shared",
 		"test:e2e": "playwright test",
 		"lint": "biome check .",
 		"format": "biome format --write .",

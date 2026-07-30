@@ -1,4 +1,8 @@
 import { auth } from '@backend/auth/auth'
+import {
+	normalizeTrpcRequest,
+	TRPC_ENDPOINT,
+} from '@backend/normalize-trpc-request'
 import { createContext } from '@backend/trpc/context'
 import { appRouter } from '@backend/trpc/root'
 import { fetchRequestHandler } from '@trpc/server/adapters/fetch'
@@ -9,23 +13,6 @@ const port = Number(process.env.PORT ?? 3000)
 let devIndex: unknown
 if (isDev) {
 	devIndex = (await import('../frontend/index.html')).default
-}
-
-const TRPC_ENDPOINT = '/api/trpc'
-
-function normalizeTrpcRequest(req: Request, url: URL): Request {
-	const afterEndpoint = url.pathname.slice(TRPC_ENDPOINT.length)
-	if (!afterEndpoint.includes('/')) {
-		return req
-	}
-	const normalizedPath = afterEndpoint
-		.replace(/\//g, '.')
-		.replace(/^\.+|\.+$/g, '')
-	const newUrl = new URL(
-		`${TRPC_ENDPOINT}${normalizedPath ? `/${normalizedPath}` : ''}${url.search}`,
-		url.origin,
-	)
-	return new Request(newUrl, req)
 }
 
 const SPA_PATHS = ['/', '/login', '/notes']

@@ -11,7 +11,7 @@ export function AuthForm({ mode }: { mode: 'signin' | 'signup' }) {
 			email: '',
 			password: '',
 			name: '',
-		},
+		} as { email: string; password: string; name?: string },
 		validators: {
 			onChange: mode === 'signup' ? signUpSchema : signInSchema,
 		},
@@ -26,7 +26,7 @@ export function AuthForm({ mode }: { mode: 'signin' | 'signup' }) {
 					: await authClient.signUp.email({
 							email: value.email,
 							password: value.password,
-							name: value.name,
+							name: value.name ?? '',
 						})
 			if (res.error) {
 				setError(res.error.message ?? 'Authentication failed')
@@ -51,7 +51,7 @@ export function AuthForm({ mode }: { mode: 'signin' | 'signup' }) {
 						<input
 							className="input input-bordered w-full"
 							placeholder="Name"
-							value={field.state.value}
+							value={field.state.value ?? ''}
 							onBlur={field.handleBlur}
 							onChange={(e) => field.handleChange(e.target.value)}
 						/>
