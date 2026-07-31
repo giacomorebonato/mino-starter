@@ -77,10 +77,11 @@ without a test is acceptable; a test far from its source is not.
 ## Verification gate (run after every add/move)
 
 ```sh
-bun run lint        # Biome — catches import sort + naming
-bun run typecheck    # tsc --noEmit — catches broken imports / references
-bun run knip         # catches now-unused exports / dead files after a move
-bun test backend shared   # unit tests still resolve from new paths
+bun run format      # Biome check --write (lint + format, writes fixes)
+bun run typecheck   # tsc --noEmit — catches broken imports / references
+bun run knip        # catches now-unused exports / dead files after a move
+bun run test        # unit tests still resolve from new paths
+# or all at once: bun run check
 ```
 
 A move is not done until all four pass. If `knip` flags the moved file as

@@ -5,7 +5,7 @@
 - Runtime/package manager/bundler/test runner: Bun
 - Frontend: React 19 SPA, TanStack Router, TanStack Query, TanStack Form, tRPC (`@trpc/tanstack-react-query`), daisyUI v5 + Tailwind v4
 - Backend: Bun.serve fullstack server, tRPC v11 fetch adapter, better-auth (Prisma adapter, email/password only)
-- DB: Prisma + SQLite. Prisma client is the Rust-free `prisma-client` generator (`runtime = "bun"`) backed by the `prisma-adapter-bun-sqlite` driver (Bun native `bun:sqlite`, no Rust query engine). Generated into `prisma/generated/` (gitignored). `backend/db/client.ts` normalizes relative `file:./` URLs to the `prisma/` dir so the adapter reads the same DB Prisma CLI migrates; absolute URLs (prod) pass through.
+- DB: Prisma + SQLite (Prisma ORM v7). Prisma client is the Rust-free `prisma-client` generator (`runtime = "bun"`) backed by the `prisma-adapter-bun-sqlite` driver (Bun native `bun:sqlite`, no Rust query engine). Generated into `prisma/generated/` (gitignored). **v7 moved the connection URL out of `schema.prisma` into `prisma.config.ts`** (the `datasource` block keeps only `provider`). `prisma.config.ts` mirrors `backend/db/client.ts`: both normalize relative `file:./` URLs to absolute paths anchored on the `prisma/` dir so the CLI and the runtime adapter read the same DB; absolute URLs (prod `file:/data/prod.db`) pass through. `prisma.config.ts` uses `import 'dotenv/config'` because Prisma CLI's config loader does not auto-load `.env`.
 - Lint/format: Biome (no semicolons, trailing comma all, single quotes)
 - E2E: Playwright
 - Agent context: APM (`apm.yml`) — run `apm install`
@@ -19,11 +19,12 @@ See `package.json` scripts. Key:
 - `bun run start` — production server (`NODE_ENV=production bun backend/server.ts`)
 - `bun test` — unit tests (`bun test backend`)
 - `bun run test:e2e` — Playwright E2E
-- `bun run lint` — Biome check
-- `bun run format` — Biome format
+- `bun run format` — Biome check + format (`biome check --write .`, lint + format in one, writes fixes)
+- `bun run check` — pre-merge gate (Biome check + typecheck + knip + test); shared by `bun run premerge` and CI
+- `bun run premerge` — run `check`, then fast-forward merge current branch → main and push
 - `bun run typecheck` — `tsc --noEmit`
 - `bun run knip` — detect unused dependencies, files, and exports (enforced in CI)
-- `bun run db:migrate` — `prisma migrate dev`
+- `bun run db:migrate` — `prisma migrate dev && prisma generate` (v7: `migrate dev` no longer auto-generates the client)
 - `bun run db:reset` — `prisma migrate reset`
 
 ## Env vars
@@ -42,7 +43,7 @@ See `.env.example`. Required:
 - Path aliases: `@backend/*`, `@frontend/*`, `@shared/*` (see `tsconfig.json`).
 - Nested `__tests__/` for unit tests.
 - No vendor-specific filenames (e.g. `CLAUDE.md`). Use `AGENTS.md`.
-- Lint/format: Biome check (`bun run lint`) and Knip (`bun run knip`) both run in CI. Knip fails on unused dependencies, files, or exports. Run `bun run knip` locally before pushing.
+- Lint/format: Biome check (`bun run format` writes fixes; `bun run check` verifies without writing) and Knip (`bun run knip`) both run in CI. Knip fails on unused dependencies, files, or exports. Run `bun run check` (or `bun run premerge`) locally before pushing.
 - Client state: React `useState`/`useReducer` for local UI state. Server state stays in TanStack Query — don't duplicate. If shared client state is needed later, add a single Zustand store under `frontend/stores/` with a `createStore()` factory wrapping `devtools` middleware.
 - Forms: TanStack Form (`useForm`) with Zod schemas passed directly to `validators` (Standard Schema native support — no `@tanstack/zod-form-adapter`). Render fields via `form.Field` render-prop and submit state via `form.Subscribe`.
 - Shared validation schemas live in `shared/schemas/` and are reused by both frontend forms and backend tRPC inputs (single source of truth — e.g. `noteSchema` in `backend/trpc/notes.ts`).
@@ -72,7 +73,7 @@ Port of `fastify-prerender-plugin` inlined into `backend/ssr/` (no external plug
 
 Target: app `mino-starter` on Fly.io. Infra files live in repo: `Dockerfile` (multi-stage Bun build) + `fly.toml` (app, volume mount, http_service).
 
-- **Image**: `Dockerfile` — build stage installs deps, runs `prisma generate`, bundles frontend to `dist/`, compiles CSS; runtime stage copies `node_modules`/`dist`/`backend`/`shared`/`prisma`, sets `DATABASE_URL=file:/data/prod.db` + `PORT=3000`, and runs `./node_modules/.bin/prisma migrate deploy && bun run backend/server.ts` on boot (migrations are idempotent, safe to run every start). Prisma CLI runs under Bun in the `oven/bun` image.
+- **Image**: `Dockerfile` — build stage installs deps, runs `prisma generate`, bundles frontend to `dist/`, compiles CSS; runtime stage copies `node_modules`/`dist`/`backend`/`shared`/`prisma`/`prisma.config.ts`, sets `DATABASE_URL=file:/data/prod.db` + `PORT=3000`, and runs `./node_modules/.bin/prisma migrate deploy && bun run backend/server.ts` on boot (migrations are idempotent, safe to run every start). Prisma CLI runs under Bun in the `oven/bun` image.
 - **SQLite persistence**: Fly volume `mino_starter_data` mounted at `/data` (see `fly.toml` `[mount]`). `prod.db` lives there and survives deploys and scale-to-zero. Lost only if the volume is deleted. SQLite volume is local to one machine — do **not** scale `>1` machine (no shared FS).
 - **VM**: `shared-cpu-1x` with 512MB RAM (see `fly.toml` `[[vm]]`). Fits because Prisma's Rust query engine is gone — the `prisma-adapter-bun-sqlite` driver uses Bun's native `bun:sqlite`.
 - **Auto-stop**: `auto_stop_machines = true`, `min_machines_running = 0` → app sleeps when idle, wakes on request. Volume persists across stop/start.
