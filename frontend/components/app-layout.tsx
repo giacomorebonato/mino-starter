@@ -25,7 +25,8 @@ export function AppLayout({
 								<label
 									htmlFor="app-drawer"
 									className="btn btn-ghost btn-square lg:hidden"
-									aria-label="Toggle sidebar"
+									aria-label="Open navigation"
+									data-testid="drawer-open"
 								>
 									<svg
 										xmlns="http://www.w3.org/2000/svg"
@@ -57,6 +58,7 @@ export function AppLayout({
 					<label
 						htmlFor="app-drawer"
 						aria-label="close sidebar"
+						data-testid="drawer-close"
 						className="drawer-overlay"
 					/>
 					<div className="min-h-full w-64">
