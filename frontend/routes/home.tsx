@@ -1,4 +1,4 @@
-import { AppShell } from '@frontend/components/app-shell'
+import { AppLayout } from '@frontend/components/app-layout'
 import { useTRPC } from '@frontend/lib/trpc'
 import { useQuery } from '@tanstack/react-query'
 
@@ -6,7 +6,7 @@ export function HomeRoute() {
 	const trpc = useTRPC()
 	const { data, isPending } = useQuery(trpc.public.siteInfo.queryOptions())
 	return (
-		<AppShell>
+		<AppLayout>
 			<div className="flex max-w-md flex-col gap-4">
 				<div className="flex flex-col gap-1">
 					<span className="eyebrow">home</span>
@@ -16,6 +16,6 @@ export function HomeRoute() {
 					{isPending ? 'Loading…' : (data?.tagline ?? '')}
 				</p>
 			</div>
-		</AppShell>
+		</AppLayout>
 	)
 }

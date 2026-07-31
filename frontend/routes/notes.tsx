@@ -1,4 +1,4 @@
-import { AppShell } from '@frontend/components/app-shell'
+import { AppLayout } from '@frontend/components/app-layout'
 import { NoteForm } from '@frontend/components/note-form'
 import { NoteList } from '@frontend/components/note-list'
 import { authClient } from '@frontend/lib/auth'
@@ -7,7 +7,7 @@ export function NotesRoute() {
 	const { data: session } = authClient.useSession()
 
 	return (
-		<AppShell
+		<AppLayout
 			actions={
 				<button
 					type="button"
@@ -31,6 +31,6 @@ export function NotesRoute() {
 				<NoteForm />
 				<NoteList />
 			</div>
-		</AppShell>
+		</AppLayout>
 	)
 }
