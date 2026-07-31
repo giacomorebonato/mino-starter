@@ -31,13 +31,7 @@ export function Sidebar() {
 							Notes
 						</Link>
 					</li>
-				) : (
-					<li>
-						<Link to="/login" activeProps={{ className: 'menu-active' }}>
-							Sign in
-						</Link>
-					</li>
-				)}
+				) : null}
 			</ul>
 
 			{signedIn && user?.email ? (

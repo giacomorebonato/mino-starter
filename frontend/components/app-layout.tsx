@@ -1,6 +1,7 @@
 import { Sidebar } from '@frontend/components/sidebar'
+import { authClient } from '@frontend/lib/auth'
 import { isBareRoute } from '@frontend/lib/layout'
-import { useLocation } from '@tanstack/react-router'
+import { Link, useLocation } from '@tanstack/react-router'
 import type { ReactNode } from 'react'
 
 export function AppLayout({
@@ -12,6 +13,8 @@ export function AppLayout({
 }) {
 	const { pathname } = useLocation()
 	const bare = isBareRoute(pathname)
+	const { data: session } = authClient.useSession()
+	const signedIn = Boolean(session?.user)
 
 	return (
 		<div className="drawer lg:drawer-open">
@@ -46,7 +49,14 @@ export function AppLayout({
 								</label>
 							)}
 						</div>
-						<div className="flex items-center gap-2">{actions}</div>
+						<div className="flex items-center gap-2">
+							{actions ??
+								(!bare && !signedIn ? (
+									<Link to="/login" className="btn btn-ghost btn-sm">
+										Sign in
+									</Link>
+								) : null)}
+						</div>
 					</div>
 				</header>
 
@@ -61,7 +71,7 @@ export function AppLayout({
 						data-testid="drawer-close"
 						className="drawer-overlay"
 					/>
-					<div className="min-h-full w-64">
+					<div className="h-dvh w-64">
 						<Sidebar />
 					</div>
 				</div>
