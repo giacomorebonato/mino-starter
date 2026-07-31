@@ -3,8 +3,7 @@ import { rmSync } from 'node:fs'
 
 export default async () => {
 	rmSync('/tmp/mino-ssr-cache-e2e', { recursive: true, force: true })
-	execSync(
-		'DATABASE_URL=file:./test.db bunx prisma migrate reset --force --skip-generate',
-		{ stdio: 'inherit' },
-	)
+	execSync('DATABASE_URL=file:./test.db bunx prisma migrate reset --force', {
+		stdio: 'inherit',
+	})
 }

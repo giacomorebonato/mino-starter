@@ -62,7 +62,8 @@
 			"includes": [
 				"e2e/**/*.ts",
 				"playwright.config.ts",
-				"playwright.ssr.config.ts"
+				"playwright.ssr.config.ts",
+				"prisma.config.ts"
 			],
 			"linter": {
 				"rules": {
