@@ -1,11 +1,11 @@
-import { AppShell } from '@frontend/components/app-shell'
+import { AppLayout } from '@frontend/components/app-layout'
 import { AuthForm } from '@frontend/components/auth-form'
 import { useState } from 'react'
 
 export function LoginRoute() {
 	const [mode, setMode] = useState<'signin' | 'signup'>('signin')
 	return (
-		<AppShell>
+		<AppLayout>
 			<div className="flex max-w-sm flex-col gap-6">
 				<div className="flex flex-col gap-1">
 					<span className="eyebrow">
@@ -33,6 +33,6 @@ export function LoginRoute() {
 				</div>
 				<AuthForm key={mode} mode={mode} />
 			</div>
-		</AppShell>
+		</AppLayout>
 	)
 }

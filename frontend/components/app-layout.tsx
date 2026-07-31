@@ -34,6 +34,7 @@ export function AppLayout({
 										viewBox="0 0 24 24"
 										stroke="currentColor"
 									>
+										<title>Toggle sidebar</title>
 										<path
 											strokeLinecap="round"
 											strokeLinejoin="round"

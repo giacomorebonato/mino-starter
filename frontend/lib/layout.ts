@@ -6,7 +6,7 @@
  * Upgrade path if routes grow or become dynamic: move this to per-route
  * `staticData: { bare: true }` and read it in AppLayout via useMatchRoute.
  */
-export const BARE_ROUTES = new Set<string>(['/login'])
+const BARE_ROUTES = new Set<string>(['/login'])
 
 export function isBareRoute(pathname: string): boolean {
 	return BARE_ROUTES.has(pathname)
