@@ -17,8 +17,6 @@ if (isDev) {
 	devIndex = (await import('../frontend/index.html')).default
 }
 
-const SPA_PATHS = ['/', '/login', '/notes']
-
 async function serveDistFile(pathname: string): Promise<Response | null> {
 	if (pathname.includes('..')) return null
 	const file = Bun.file(`dist${pathname}`)
@@ -42,9 +40,7 @@ const server = Bun.serve({
 	...(isDev
 		? {
 				routes: {
-					'/': devIndex as unknown as import('bun').HTMLBundle,
-					'/login': devIndex as unknown as import('bun').HTMLBundle,
-					'/notes': devIndex as unknown as import('bun').HTMLBundle,
+					'/*': devIndex as unknown as import('bun').HTMLBundle,
 				},
 				development: { hmr: true, console: true },
 			}
@@ -76,7 +72,10 @@ const server = Bun.serve({
 		if (url.pathname.startsWith('/api/auth')) {
 			return auth.handler(req)
 		}
-		if (!isDev && SPA_PATHS.includes(url.pathname)) {
+		// SPA fallback: serve the shell for any non-static, non-API path so the
+		// client router owns routing. New client routes need no server change.
+		// Unknown /api/* paths still 404 (they are not SPA routes).
+		if (!isDev && !url.pathname.startsWith('/api')) {
 			return new Response(Bun.file('dist/index.html'))
 		}
 		return new Response(JSON.stringify({ error: 'Not found' }), {

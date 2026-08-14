@@ -57,8 +57,6 @@ See `.env.example`. Required:
 
 ## Bot SSR (SEO)
 
-Port of `fastify-prerender-plugin` inlined into `backend/ssr/` (no external plugin dep), adapted to `Bun.serve`.
-
 - **Prod-only**: prerender is constructed only when `NODE_ENV === 'production'` (`backend/server.ts`); dev keeps the HTMLBundle routes + HMR and serves the raw shell to everyone.
 - **Flow** (`backend/ssr/prerender.ts` → `createPrerenderHandler`): `GET` + bot UA (`isbot`, plus `facebookexternalhit`/`whatsapp`/`twitterbot`) + path in `PUBLIC_SSR_PATHS` (`shared/ssr-paths.ts`, `(string | RegExp)[]`, strings match pathname, regex tests path+query) → render, else fall through. Runs first in the fetch handler (like the plugin's `onRequest` hook).
 - **Render**: `backend/ssr/request-from-browser.ts` spawns a `worker_thread` that calls `@lightpanda/browser`'s `lightpanda.fetch(url, { dump: true })` (JS API, not the CLI). The binary is provided by `@lightpanda/browser`'s postinstall (`~/.cache/lightpanda-node/lightpanda`, overridable via `LIGHTPANDA_EXECUTABLE_PATH`). Verified to work under Bun's runtime.
