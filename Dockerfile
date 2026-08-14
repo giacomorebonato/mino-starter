@@ -7,6 +7,14 @@ COPY . .
 ENV DATABASE_URL=file:./dev.db
 RUN bunx prisma generate
 RUN bun run build
+# Download the Lightpanda browser binary explicitly. The @lightpanda/browser
+# postinstall downloads it to ~/.cache/lightpanda-node but is wrapped in
+# `|| true` (silently fails on flaky network / checksum mismatch), so the
+# binary is not guaranteed to exist. bun fetch follows redirects and needs no
+# extra packages (the oven/bun image ships no curl).
+RUN mkdir -p /root/.cache/lightpanda-node \
+	&& bun -e "const res = await fetch('https://github.com/lightpanda-io/browser/releases/download/nightly/lightpanda-x86_64-linux'); if (!res.ok) throw new Error('lightpanda download failed: ' + res.status); await Bun.write('/root/.cache/lightpanda-node/lightpanda', await res.arrayBuffer());" \
+	&& chmod +x /root/.cache/lightpanda-node/lightpanda
 
 FROM oven/bun:1
 WORKDIR /app
@@ -22,6 +30,7 @@ COPY --from=build /app/tsconfig.json ./tsconfig.json
 COPY --from=build /app/prisma.config.ts ./prisma.config.ts
 ENV NODE_ENV=production
 ENV DATABASE_URL=file:/data/prod.db
+ENV LIGHTPANDA_EXECUTABLE_PATH=/root/.cache/lightpanda-node/lightpanda
 ENV PORT=3000
 EXPOSE 3000
 CMD ["sh", "-c", "./node_modules/.bin/prisma migrate deploy && bun run backend/server.ts"]
