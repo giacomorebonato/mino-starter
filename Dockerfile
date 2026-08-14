@@ -4,6 +4,7 @@ COPY package.json bun.lock ./
 COPY prisma ./prisma
 RUN bun install --frozen-lockfile
 COPY . .
+ENV DATABASE_URL=file:./dev.db
 RUN bunx prisma generate
 RUN bun run build
 
