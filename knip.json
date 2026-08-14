@@ -10,6 +10,7 @@
 		"backend/auth/auth.ts",
 		"backend/trpc/*.ts",
 		"backend/__tests__/*.test.ts",
+		"frontend/__tests__/*.test.ts",
 		"scripts/prod-css.ts"
 	],
 	"project": [
