@@ -10,7 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      # 1.4.x is a canary line (no stable 1.4.0 release yet). Pin canary
+      # explicitly so setup-bun doesn't try to resolve engines.bun (>=1.2.0
+      # floor) to a stable tag that doesn't exist for 1.4.
       - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: canary
       - run: bun install
         env:
           DATABASE_URL: file:./dev.db

@@ -27,7 +27,7 @@ See `.agents/skills/project-structure/SKILL.md` for placement rules + the move v
 - Lint/format: Biome (no semicolons, trailing comma all, single quotes)
 - E2E: Playwright
 - Agent context: APM (`apm.yml`) — run `bun run bootstrap` (or `apm install`) to install skills + MCP
-- Bun version pinned via `.bun-version` and `package.json` `engines` (currently 1.4.0); keep both in sync
+- Bun version pinned via `.bun-version` (canary line) and `package.json` `engines` (>=1.2.0 floor). CI installs `canary` explicitly (`oven-sh/setup-bun@v2` `bun-version: canary`) because the 1.4.x line has no stable release yet; loosen/remove once 1.4 goes stable.
 
 ## Scripts
 
