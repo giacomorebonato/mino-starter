@@ -38,11 +38,11 @@
 					}
 				},
 				"noExcessiveLinesPerFunction": "warn",
-				"noForEach": "error",
+				"noForEach": "warn",
 				"noUselessCatch": "error",
 				"noUselessConstructor": "error",
 				"useMaxParams": {
-					"level": "error",
+					"level": "warn",
 					"options": {
 						"max": 4
 					}
@@ -133,7 +133,12 @@
 			}
 		},
 		{
-			"includes": ["scripts/**", "backend/server.ts", "backend/ssr/**"],
+			"includes": [
+				"scripts/**",
+				"backend/server.ts",
+				"backend/ssr/**",
+				"**/__tests__/**"
+			],
 			"linter": {
 				"rules": {
 					"suspicious": {

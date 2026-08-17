@@ -1,3 +1,8 @@
+> **Not a Python `requirements.txt`.** This is the project stack spec
+> (the name mirrors the convention used across the mino-* projects).
+> Do **not** run `pip install -r requirements.txt`. See `AGENTS.md` for the
+> authoritative agent context.
+
 ## Technical stack
 
 * [Bun](https://bun.com/) used as runtime, package manager, test runner, bundler

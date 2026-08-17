@@ -2,17 +2,22 @@
 	"name": "mino-starter",
 	"type": "module",
 	"private": true,
+	"engines": {
+		"bun": ">=1.4.0"
+	},
 	"scripts": {
 		"dev": "bun --hot backend/server.ts",
 		"build": "bun run scripts/build.ts",
 		"start": "NODE_ENV=production bun backend/server.ts",
-		"test": "bun test backend shared",
+		"test": "bun test backend shared frontend",
 		"test:e2e": "playwright test",
+		"check:full": "bash scripts/check.sh && bun run test:e2e",
 		"test:e2e:ssr": "playwright test --config=playwright.ssr.config.ts",
 		"format": "biome check --write .",
 		"typecheck": "tsc --noEmit",
 		"knip": "knip",
 		"check": "bash scripts/check.sh",
+		"bootstrap": "bash scripts/bootstrap.sh",
 		"premerge": "bash scripts/premerge.sh",
 		"db:migrate": "prisma migrate dev && prisma generate",
 		"db:reset": "prisma migrate reset",

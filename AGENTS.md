@@ -1,5 +1,23 @@
 # AGENTS.md
 
+## TL;DR — first commands
+
+- **Fresh clone:** `bun run bootstrap` → installs deps, APM skills/MCP, generates Prisma client, migrates dev DB, wires `.githooks/`.
+- **Dev:** `bun run dev`.
+- **Before claiming work done:** `bun run check`. For UI/auth/route changes also `bun run check:full` (adds Playwright E2E).
+- **Merge:** `bun run premerge` runs `check`, then fast-forwards current branch → main and pushes.
+
+## TL;DR — add a feature (vertical slice)
+
+1. `shared/schemas/<name>.ts` — Zod schema (single source of truth).
+2. `backend/trpc/<name>.ts` — router using the schema as `input`; mount in `backend/trpc/root.ts` `appRouter`.
+3. `frontend/routes/<name>.tsx` — route; register in `frontend/router.tsx` `routeTree`. Add components under `frontend/components/`.
+4. `__tests__/<source>.test.ts` co-located next to each source (backend + frontend).
+5. `e2e/<name>.spec.ts` — Playwright spec.
+6. `bun run check` (and `check:full` if UI). 
+
+See `.agents/skills/project-structure/SKILL.md` for placement rules + the move verification gate.
+
 ## Stack
 
 - Runtime/package manager/bundler/test runner: Bun
@@ -8,7 +26,8 @@
 - DB: Prisma + SQLite (Prisma ORM v7). Prisma client is the Rust-free `prisma-client` generator (`runtime = "bun"`) backed by the `prisma-adapter-bun-sqlite` driver (Bun native `bun:sqlite`, no Rust query engine). Generated into `prisma/generated/` (gitignored). **v7 moved the connection URL out of `schema.prisma` into `prisma.config.ts`** (the `datasource` block keeps only `provider`). `prisma.config.ts` mirrors `backend/db/client.ts`: both normalize relative `file:./` URLs to absolute paths anchored on the `prisma/` dir so the CLI and the runtime adapter read the same DB; absolute URLs (prod `file:/data/prod.db`) pass through. `prisma.config.ts` uses `import 'dotenv/config'` because Prisma CLI's config loader does not auto-load `.env`.
 - Lint/format: Biome (no semicolons, trailing comma all, single quotes)
 - E2E: Playwright
-- Agent context: APM (`apm.yml`) — run `apm install`
+- Agent context: APM (`apm.yml`) — run `bun run bootstrap` (or `apm install`) to install skills + MCP
+- Bun version pinned via `.bun-version` and `package.json` `engines` (currently 1.4.0); keep both in sync
 
 ## Scripts
 
@@ -17,10 +36,12 @@ See `package.json` scripts. Key:
 - `bun run dev` — dev server with HMR (`bun --hot backend/server.ts`)
 - `bun run build` — production bundle (`scripts/build.ts` via `Bun.build` with `publicPath: "/"` so hashed JS/CSS links are root-relative and work on all SPA routes, a prod devtools-stub plugin, and Tailwind CSS compile via `scripts/prod-css.ts`)
 - `bun run start` — production server (`NODE_ENV=production bun backend/server.ts`)
-- `bun test` — unit tests (`bun test backend`)
+- `bun test` — unit tests (`bun test backend shared frontend`; co-located `__tests__/` next to each source, including frontend pure helpers)
 - `bun run test:e2e` — Playwright E2E
+- `bun run check:full` — `check` + `test:e2e`; run before claiming UI/auth/route work is done (E2E is intentionally excluded from `check` for speed)
 - `bun run format` — Biome check + format (`biome check --write .`, lint + format in one, writes fixes)
 - `bun run check` — pre-merge gate (Biome check + typecheck + knip + test); shared by `bun run premerge` and CI
+- `bun run bootstrap` — one-command fresh-clone setup (deps + APM + Prisma generate + migrate + git hooks); idempotent
 - `bun run premerge` — run `check`, then fast-forward merge current branch → main and push
 - `bun run typecheck` — `tsc --noEmit`
 - `bun run knip` — detect unused dependencies, files, and exports (enforced in CI)
@@ -92,4 +113,10 @@ Target: app `mino-starter` on Fly.io. Infra files live in repo: `Dockerfile` (mu
 
 ## Skills/MCP
 
-Run `apm install` to install the frontend-design skill, Playwright MCP, GitHub MCP, and Prisma MCP declared in `apm.yml`.
+Run `apm install` (or `bun run bootstrap`) to install the frontend-design, TanStack, and daisyUI skills plus the Playwright, GitHub, Prisma, and Context7 MCP servers declared in `apm.yml`.
+
+**Source of truth:** `apm.yml` is the canonical list of skills + MCP servers. `.mcp.json` is a minimal hand-maintained fallback (Context7 only) for agents that read `.mcp.json` directly and do not understand APM; it is intentionally not kept in lockstep with `apm.yml` because some APM-managed servers need tokens/secrets not appropriate to ship in a starter. Do not hand-add token-gated servers to `.mcp.json`.
+
+## Git hooks
+
+`.githooks/pre-commit` runs Biome check + typecheck. `.githooks/pre-push` runs the full `scripts/check.sh` gate. `bun run bootstrap` sets `core.hooksPath = .githooks`. Bypass with `--no-verify` only when intentionally breaking the gate.
