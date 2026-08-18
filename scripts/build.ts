@@ -23,7 +23,7 @@ const DEVTOOLS_PACKAGES = [
 
 const devtoolsStubPlugin: BunPlugin = {
 	name: 'prod-devtools-stub',
-	setup(build) {
+	setup(build): void {
 		const filter = new RegExp(
 			`^(${DEVTOOLS_PACKAGES.map((p) => p.replace(/[.*+?^${}()|[\]\\/]/g, '\\$&')).join('|')})$`,
 		)
@@ -39,6 +39,11 @@ const result = await Bun.build({
 	publicPath: '/',
 	define: { 'process.env.NODE_ENV': '"production"' },
 	plugins: [devtoolsStubPlugin],
+	// React Compiler (experimental, Bun native). Off via REACT_COMPILER=0.
+	// Runs only in the prod bundler — `bun --hot` dev server is unaffected.
+	// Cannot fail the build: Bun falls back to original source on any bailout.
+	reactCompiler: process.env.REACT_COMPILER !== '0',
+	reactCompilerOutputMode: 'client',
 })
 
 if (!result.success) {

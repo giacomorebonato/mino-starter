@@ -88,6 +88,7 @@
 				"noFloatingPromises": "error",
 				"useAwaitThenable": "error",
 				"useExplicitReturnType": "warn",
+				"useReactCompiler": "warn",
 				"useSortedClasses": "error",
 				"useThisInClassMethods": "error"
 			}
