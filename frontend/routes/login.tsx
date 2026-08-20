@@ -4,6 +4,8 @@ import { useState } from 'react'
 
 export function LoginRoute() {
 	const [mode, setMode] = useState<'signin' | 'signup'>('signin')
+	const setSignin = (): void => setMode('signin')
+	const setSignup = (): void => setMode('signup')
 	return (
 		<AppLayout>
 			<div className="flex max-w-sm flex-col gap-6">
@@ -19,14 +21,14 @@ export function LoginRoute() {
 					<button
 						type="button"
 						className={`btn join-item ${mode === 'signin' ? 'btn-active' : ''}`}
-						onClick={() => setMode('signin')}
+						onClick={setSignin}
 					>
 						Sign in
 					</button>
 					<button
 						type="button"
 						className={`btn join-item ${mode === 'signup' ? 'btn-active' : ''}`}
-						onClick={() => setMode('signup')}
+						onClick={setSignup}
 					>
 						Sign up
 					</button>

@@ -27,7 +27,7 @@ See `.agents/skills/project-structure/SKILL.md` for placement rules + the move v
 - Lint/format: Biome (no semicolons, trailing comma all, single quotes)
 - E2E: Playwright
 - Agent context: APM (`apm.yml`) — run `bun run bootstrap` (or `apm install`) to install skills + MCP
-- Bun version pinned via `.bun-version` (canary line) and `package.json` `engines` (>=1.2.0 floor). CI installs `canary` explicitly (`oven-sh/setup-bun@v2` `bun-version: canary`) because the 1.4.x line has no stable release yet; loosen/remove once 1.4 goes stable.
+- Bun version pinned via `.bun-version` (`1.4.0`) and `package.json` `engines` (>=1.4.0 floor). CI uses `oven-sh/setup-bun@v2` with `bun-version: 1.4.0` for reproducible builds.
 
 ## Scripts
 
@@ -127,7 +127,7 @@ Both integrations are opt-in-friendly and toggleable. Goal is exploration + fili
 
 **Build compilation** — `scripts/build.ts` passes `reactCompiler: true` (Bun 1.4+ native, no Babel/plugin). Produces `_c(N)` memo cache calls + `react/compiler-runtime` imports in `dist/`. Off via `REACT_COMPILER=0`. Runs **only in the prod bundler** — `bun --hot` dev server uses the runtime transpiler and is unaffected (DevTools "Memo ✨" badge visible on a prod build, not in dev). Cannot fail the build: Bun falls back to original source on any compiler bailout/parse error. Known limit: sourcemaps map to the compiled intermediate, not original lines.
 
-**Known Bun bug (file upstream)** — `bun run build` (package-script alias) does **not** propagate `reactCompiler` to the bundler; the prod bundle is emitted uncompiled (1 `react.memo_cache_sentinel` from React itself, no delta vs `REACT_COMPILER=0`). `bun scripts/build.ts` (direct file invocation) and `bun --bun run build` both compile correctly (2 sentinels, ~6 KB delta). Root cause is in `bun run <package-alias>` script execution, not the build script — the option is read and passed to `Bun.build`, but the bundler ignores it under the alias path. Until fixed, run `bun scripts/build.ts` to actually compile.
+**Known Bun bug (file upstream)** — `bun run build` (package-script alias) does **not** propagate `reactCompiler` to the bundler; the prod bundle is emitted uncompiled (1 `react.memo_cache_sentinel` from React itself, no delta vs `REACT_COMPILER=0`). `bun scripts/build.ts` (direct file invocation) and `bun --bun run build` both compile correctly (2 sentinels, ~6 KB delta). Root cause is in `bun run <package-alias>` script execution, not the build script — the option is read and passed to `Bun.build`, but the bundler ignores it under the alias path. The `Dockerfile` uses `bun --bun run build` so production images compile correctly; local builds should use `bun scripts/build.ts` or `bun --bun run build`.
 
 **Lint diagnostics** — `biome.json` enables `nursery.useReactCompiler: "warn"`. Biome 2.5.8 embeds the React Compiler Rust port — no `babel-plugin-react-compiler` dep. Rule runs only when nearest `package.json` declares React ≥19 (satisfied). `warn` severity surfaces violations in `bun run check` without failing the gate (Biome exits non-zero only on errors). `compilationMode` default `infer` (only components/hooks). Tracked upstream: biomejs/biome#10974. As of enabling: **0 violations** on the codebase (already compiler-clean).
 

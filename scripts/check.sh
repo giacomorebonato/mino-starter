@@ -17,6 +17,6 @@ step 'knip'
 bun run knip
 
 step 'test'
-bun run test
+bun run test --parallel
 
 printf '\n\033[32m✓ all checks passed\033[0m\n'

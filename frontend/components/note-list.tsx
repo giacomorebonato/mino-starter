@@ -29,7 +29,7 @@ export function NoteList() {
 					<button
 						type="button"
 						className="btn btn-ghost btn-sm btn-error"
-						onClick={() => del.mutate({ id: note.id })}
+						onClick={(): void => del.mutate({ id: note.id })}
 						disabled={del.isPending}
 					>
 						Delete

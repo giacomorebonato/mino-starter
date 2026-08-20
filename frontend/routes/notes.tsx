@@ -6,15 +6,18 @@ import { authClient } from '@frontend/lib/auth'
 export function NotesRoute() {
 	const { data: session } = authClient.useSession()
 
+	const signOut = (): Promise<void> =>
+		authClient.signOut().then(() => {
+			window.location.href = '/login'
+		})
+
 	return (
 		<AppLayout
 			actions={
 				<button
 					type="button"
 					className="btn btn-ghost btn-sm"
-					onClick={() =>
-						authClient.signOut().then(() => (window.location.href = '/login'))
-					}
+					onClick={signOut}
 				>
 					Sign out
 					<span className="hidden opacity-60 sm:inline">

@@ -10,4 +10,4 @@ const Noop: FC<Record<string, unknown>> = () => null
 export const TanStackDevtools = Noop
 export const ReactQueryDevtoolsPanel = Noop
 export const TanStackRouterDevtoolsPanel = Noop
-export const formDevtoolsPlugin = () => ({ name: 'noop' })
+export const formDevtoolsPlugin = (): { name: string } => ({ name: 'noop' })

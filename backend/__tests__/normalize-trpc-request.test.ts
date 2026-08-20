@@ -4,7 +4,10 @@ import {
 	TRPC_ENDPOINT,
 } from '@backend/normalize-trpc-request'
 
-function call(pathnameAndSearch: string, init?: RequestInit) {
+function call(
+	pathnameAndSearch: string,
+	init?: RequestInit,
+): { req: Request; result: Request } {
 	const req = new Request(`http://localhost${pathnameAndSearch}`, init)
 	const url = new URL(req.url)
 	return { req, result: normalizeTrpcRequest(req, url) }

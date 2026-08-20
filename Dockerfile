@@ -1,4 +1,4 @@
-FROM oven/bun:1 AS build
+FROM oven/bun:1.4.0 AS build
 WORKDIR /app
 COPY package.json bun.lock ./
 COPY prisma ./prisma
@@ -6,7 +6,7 @@ RUN bun install --frozen-lockfile
 COPY . .
 ENV DATABASE_URL=file:./dev.db
 RUN bunx prisma generate
-RUN bun run build
+RUN bun --bun run build
 # Download the Lightpanda browser binary explicitly. The @lightpanda/browser
 # postinstall downloads it to ~/.cache/lightpanda-node but is wrapped in
 # `|| true` (silently fails on flaky network / checksum mismatch), so the
@@ -16,7 +16,7 @@ RUN mkdir -p /root/.cache/lightpanda-node \
 	&& bun -e "const res = await fetch('https://github.com/lightpanda-io/browser/releases/download/nightly/lightpanda-x86_64-linux'); if (!res.ok) throw new Error('lightpanda download failed: ' + res.status); await Bun.write('/root/.cache/lightpanda-node/lightpanda', await res.arrayBuffer());" \
 	&& chmod +x /root/.cache/lightpanda-node/lightpanda
 
-FROM oven/bun:1
+FROM oven/bun:1.4.0
 WORKDIR /app
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /root/.cache/lightpanda-node /root/.cache/lightpanda-node
