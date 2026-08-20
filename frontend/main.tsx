@@ -18,7 +18,7 @@ createRoot(root).render(
 	<QueryClientProvider client={queryClient}>
 		<TRPCProvider trpcClient={trpcClient} queryClient={queryClient}>
 			<RouterProvider router={router} />
-			<AppDevtools router={router} />
+			<AppDevtools />
 		</TRPCProvider>
 	</QueryClientProvider>,
 )
