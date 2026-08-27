@@ -35,11 +35,42 @@ if (!isDev) {
 	})
 }
 
+// Dispatch /api/* requests (tRPC + better-auth). Used both from the dev
+// `routes` map (so the `/*` HTMLBundle wildcard doesn't shadow API POSTs with
+// 405) and from the prod `fetch` handler.
+async function handleApi(req: Request): Promise<Response> {
+	const url = new URL(req.url)
+	if (url.pathname.startsWith(TRPC_ENDPOINT)) {
+		const trpcReq = normalizeTrpcRequest(req, url)
+		return fetchRequestHandler({
+			endpoint: TRPC_ENDPOINT,
+			req: trpcReq,
+			router: appRouter,
+			createContext,
+		})
+	}
+	if (url.pathname.startsWith('/api/auth')) {
+		return auth.handler(req)
+	}
+	return new Response(JSON.stringify({ error: 'Not found' }), {
+		status: 404,
+		headers: { 'content-type': 'application/json' },
+	})
+}
+
 const server = Bun.serve({
 	port,
 	...(isDev
 		? {
+				// Dev: register /api/* as explicit function routes so they take
+				// precedence over the `/*` HTMLBundle wildcard. Bun matches `routes`
+				// before `fetch`, and a wildcard HTMLBundle route only accepts
+				// GET/HEAD (POST -> 405), which previously broke auth signup and
+				// tRPC mutations. The `/*` route serves the SPA shell + HMR for any
+				// other path so new client routes need no server change.
 				routes: {
+					'/api/auth/*': handleApi,
+					'/api/trpc/*': handleApi,
 					'/*': devIndex as unknown as import('bun').HTMLBundle,
 				},
 				development: { hmr: true, console: true },
@@ -60,28 +91,13 @@ const server = Bun.serve({
 			const staticFile = await serveDistFile(url.pathname)
 			if (staticFile) return staticFile
 		}
-		if (url.pathname.startsWith(TRPC_ENDPOINT)) {
-			const trpcReq = normalizeTrpcRequest(req, url)
-			return fetchRequestHandler({
-				endpoint: TRPC_ENDPOINT,
-				req: trpcReq,
-				router: appRouter,
-				createContext,
-			})
-		}
-		if (url.pathname.startsWith('/api/auth')) {
-			return auth.handler(req)
+		if (url.pathname.startsWith('/api')) {
+			return handleApi(req)
 		}
 		// SPA fallback: serve the shell for any non-static, non-API path so the
 		// client router owns routing. New client routes need no server change.
-		// Unknown /api/* paths still 404 (they are not SPA routes).
-		if (!isDev && !url.pathname.startsWith('/api')) {
-			return new Response(Bun.file('dist/index.html'))
-		}
-		return new Response(JSON.stringify({ error: 'Not found' }), {
-			status: 404,
-			headers: { 'content-type': 'application/json' },
-		})
+		// Unknown /api/* paths still 404 (handled by handleApi above).
+		return new Response(Bun.file('dist/index.html'))
 	},
 })
 
