@@ -18,6 +18,7 @@ frontend/   React 19 SPA — components, routes, lib, app entry
 shared/     Code imported by both sides — schemas, tRPC type re-export
 e2e/        Playwright specs + global setup
 scripts/    Build / prod tooling
+docs/       Agent deep docs (docs/agents/*.md), linked from AGENTS.md
 ```
 
 No `src/`. No other top-level dirs without explicit approval. `AGENTS.md`,
