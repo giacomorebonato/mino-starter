@@ -10,7 +10,7 @@ cp .env.example .env # then fill BETTER_AUTH_SECRET etc.
 bun run dev          # http://localhost:3000
 ```
 
-Requires Bun 1.4.0+ (see `.bun-version`).
+Requires Bun 1.4.2+ (see `.bun-version`).
 
 ## Working with an agent
 

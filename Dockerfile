@@ -1,4 +1,4 @@
-FROM oven/bun:1.4.0 AS build
+FROM oven/bun:1.4.2 AS build
 WORKDIR /app
 COPY package.json bun.lock ./
 COPY prisma ./prisma
@@ -16,7 +16,7 @@ RUN mkdir -p /root/.cache/lightpanda-node \
 	&& bun -e "const res = await fetch('https://github.com/lightpanda-io/browser/releases/download/nightly/lightpanda-x86_64-linux'); if (!res.ok) throw new Error('lightpanda download failed: ' + res.status); await Bun.write('/root/.cache/lightpanda-node/lightpanda', await res.arrayBuffer());" \
 	&& chmod +x /root/.cache/lightpanda-node/lightpanda
 
-FROM oven/bun:1.4.0
+FROM oven/bun:1.4.2
 WORKDIR /app
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /root/.cache/lightpanda-node /root/.cache/lightpanda-node
