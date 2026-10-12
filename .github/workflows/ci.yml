@@ -8,19 +8,16 @@ on:
 jobs:
   check:
     runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: file:./dev.db
     steps:
       - uses: actions/checkout@v4
-      # Bun 1.4.2 is now stable. Pin to the version declared in .bun-version
-      # and package.json engines so CI is reproducible.
+      # Read the shared runtime pin so local development and CI stay aligned.
       - uses: oven-sh/setup-bun@v2
         with:
-          bun-version: 1.4.2
-      - run: bun install
-        env:
-          DATABASE_URL: file:./dev.db
-      - run: bunx prisma generate
-        env:
-          DATABASE_URL: file:./dev.db
+          bun-version-file: .bun-version
+      - run: bun install --frozen-lockfile
+      - run: bun run db:generate
       - run: bun run check
 
   deploy:

@@ -5,12 +5,12 @@ Reusable full-stack starter built **AI-first**: Bun + React + tRPC + better-auth
 ## Quick start (fresh clone)
 
 ```sh
-bun run bootstrap   # deps + APM skills/MCP + prisma generate + migrate + git hooks
 cp .env.example .env # then fill BETTER_AUTH_SECRET etc.
+bun run bootstrap   # deps + APM skills/MCP + prisma generate + migrate + git hooks
 bun run dev          # http://localhost:3000
 ```
 
-Requires Bun 1.4.2+ (see `.bun-version`).
+Requires Bun 1.4.3+ (see `.bun-version`).
 
 ## Working with an agent
 
@@ -39,7 +39,7 @@ Git hooks (`.githooks/`, wired by `bootstrap`) run biome+typecheck at commit and
 - `bun run check` — pre-merge gate (biome + typecheck + knip + test), shared by `premerge` and CI
 - `bun run premerge` — run `check`, then fast-forward merge current branch → main and push
 - `bun run bootstrap` — one-command fresh-clone setup (idempotent)
-- `bun run typecheck` — tsc --noEmit
+- `bun run typecheck` — Bun’s built-in type checker (`bun --check`)
 - `bun run db:migrate` — prisma migrate dev
 - `bun run db:reset` — prisma migrate reset
 

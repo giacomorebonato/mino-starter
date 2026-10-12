@@ -1,2 +1,7 @@
 [serve.static]
 plugins = ["bun-plugin-tailwind"]
+
+[install]
+# Required peers are declared explicitly; the Tailwind plugin’s Bun peer would
+# otherwise install a second runtime that shadows the system Bun in scripts.
+peer = false

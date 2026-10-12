@@ -7,7 +7,7 @@
 // In dev (`bun --hot backend/server.ts`) the dev server bundles the real
 // devtools packages, so the panels work locally. Only the production build
 // uses this script + stub.
-import { $ } from 'bun'
+import { $, type BunPlugin } from 'bun'
 
 const STUB_PATH = new URL(
 	'../frontend/components/devtools-stub.ts',
@@ -35,13 +35,14 @@ const result = await Bun.build({
 	entrypoints: ['frontend/index.html'],
 	outdir: 'dist',
 	target: 'browser',
+	check: true,
 	minify: true,
 	publicPath: '/',
 	define: { 'process.env.NODE_ENV': '"production"' },
 	plugins: [devtoolsStubPlugin],
 	// React Compiler (experimental, Bun native). Off via REACT_COMPILER=0.
 	// Runs only in the prod bundler — `bun --hot` dev server is unaffected.
-	// Cannot fail the build: Bun falls back to original source on any bailout.
+	// Supported compiler bailouts fall back to original source; build errors still fail.
 	reactCompiler: process.env.REACT_COMPILER !== '0',
 	reactCompilerOutputMode: 'client',
 })

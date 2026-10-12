@@ -14,5 +14,5 @@
 			"@shared/*": ["./shared/*"]
 		}
 	},
-	"include": ["frontend", "backend", "shared", "e2e"]
+	"include": ["frontend", "backend", "shared", "e2e", "scripts", "*.config.ts"]
 }

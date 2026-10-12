@@ -5,9 +5,10 @@
 `package.json` is the source of truth. The non-obvious ones:
 
 - `bun run dev` — dev server with HMR (`bun --hot backend/server.ts`)
-- `bun run build` — production bundle via `scripts/build.ts` (`Bun.build`), React Compiler enabled — see [react-compiler.md](react-compiler.md) and [conventions.md](conventions.md#build-internals)
+- `bun run build` — production bundle via `scripts/build.ts` (`Bun.build` with `check: true`), React Compiler enabled — see [react-compiler.md](react-compiler.md) and [conventions.md](conventions.md#build-internals)
 - `bun run start` — production server (`NODE_ENV=production bun backend/server.ts`)
 - `bun run test` — unit tests (`bun test backend shared frontend`; co-located `__tests__/` next to each source)
+- `bun run typecheck` — Bun’s built-in checker (`bun --check`); `bun check` alone runs the project’s `check` script
 - `bun run test:e2e` — Playwright E2E
 - `bun run test:e2e:ssr` — SSR E2E against the prod server (separate `playwright.ssr.config.ts`; clears its cache in `e2e/global-setup.ts`). The default `playwright.config.ts` ignores `ssr.spec.ts`
 - `bun run check` — pre-merge gate (`scripts/check.sh`): Biome check + typecheck + knip + unit tests. Shared with CI. Run **before claiming any work done**
@@ -18,7 +19,9 @@
 - `bun run db:migrate` — `prisma migrate dev && prisma generate` (v7: `migrate dev` no longer auto-generates the client) — see [prisma.md](prisma.md)
 - `bun run db:reset` — `prisma migrate reset`
 
-`postinstall` runs `prisma generate`.
+`postinstall` runs `bun run db:generate`. `bun run db:generate` and `bun run db:deploy` also run Prisma under Bun.
+
+`bunfig.toml` disables automatic peer installation to prevent the Tailwind plugin from installing another Bun runtime. Declare required peer dependencies explicitly. TypeScript stays installed for tRPC’s peer requirement and editor support; `@types/bun` supplies Node types.
 
 ## Env vars
 

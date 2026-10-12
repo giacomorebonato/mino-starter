@@ -9,7 +9,7 @@ export default async function globalSetup(): Promise<void> {
 	// same clean-slate result and works in any environment.
 	rmSync('prisma/test.db', { force: true })
 	rmSync('prisma/test.db-journal', { force: true })
-	execSync('DATABASE_URL=file:./test.db bunx prisma migrate deploy', {
+	execSync('DATABASE_URL=file:./test.db bun run db:deploy', {
 		stdio: 'inherit',
 	})
 }

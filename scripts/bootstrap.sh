@@ -22,7 +22,7 @@ else
 fi
 
 step 'prisma generate (postinstall also does this; run again to be safe)'
-bunx prisma generate
+bun run db:generate
 
 step 'db migrate (dev)'
 bun run db:migrate

@@ -79,7 +79,7 @@ without a test is acceptable; a test far from its source is not.
 
 ```sh
 bun run format      # Biome check --write (lint + format, writes fixes)
-bun run typecheck   # tsc --noEmit — catches broken imports / references
+bun run typecheck   # bun --check — catches broken imports / references
 bun run knip        # catches now-unused exports / dead files after a move
 bun run test        # unit tests still resolve from new paths
 # or all at once: bun run check
