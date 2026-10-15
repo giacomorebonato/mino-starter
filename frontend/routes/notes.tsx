@@ -29,7 +29,7 @@ export function NotesRoute() {
 			<div className="flex flex-col gap-6">
 				<div className="flex flex-col gap-1">
 					<span className="eyebrow">demo route</span>
-					<h1 className="font-bold text-2xl">Notes</h1>
+					<h1 className="text-2xl font-bold">Notes</h1>
 				</div>
 				<NoteForm />
 				<NoteList />

@@ -12,11 +12,11 @@
 		"test": "bun test backend shared frontend",
 		"test:e2e": "bunx --bun playwright test",
 		"test:e2e:ssr": "bunx --bun playwright test --config=playwright.ssr.config.ts",
-		"lint": "biome check .",
-		"format": "biome check --write .",
+		"lint": "bun lint",
+		"format": "bun lint --fix && bun fmt",
 		"typecheck": "bun --check",
 		"knip": "bun --env-file=.env node_modules/.bin/knip",
-		"check": "bun run lint && bun run typecheck && bun run knip && bun run test --parallel",
+		"check": "bun run lint && bun run format:check && bun run typecheck && bun run knip && bun run test --parallel",
 		"check:full": "bun run check && bun run test:e2e",
 		"bootstrap": "bash scripts/bootstrap.sh",
 		"premerge": "bash scripts/premerge.sh",
@@ -24,10 +24,10 @@
 		"db:reset": "bun --env-file=.env run --bun prisma migrate reset",
 		"db:generate": "bun --env-file=.env run --bun prisma generate",
 		"db:deploy": "bun --env-file=.env run --bun prisma migrate deploy",
-		"postinstall": "bun run db:generate"
+		"postinstall": "bun run db:generate",
+		"format:check": "bun fmt --check"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.5.9",
 		"@playwright/test": "1.62.1",
 		"@tailwindcss/cli": "4.3.3",
 		"@tanstack/react-devtools": "^0.10.12",

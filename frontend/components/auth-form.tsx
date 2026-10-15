@@ -41,7 +41,7 @@ export function AuthForm({ mode }: { mode: 'signin' | 'signup' }) {
 			className="flex max-w-sm flex-col gap-2"
 			onSubmit={(e) => {
 				e.preventDefault()
-				form.handleSubmit()
+				void form.handleSubmit()
 			}}
 		>
 			{mode === 'signup' && (

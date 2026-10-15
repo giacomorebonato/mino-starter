@@ -13,7 +13,7 @@ export function LoginRoute() {
 					<span className="eyebrow">
 						{mode === 'signin' ? 'welcome back' : 'create account'}
 					</span>
-					<h1 className="font-bold text-2xl">
+					<h1 className="text-2xl font-bold">
 						{mode === 'signin' ? 'Sign in' : 'Sign up'}
 					</h1>
 				</div>

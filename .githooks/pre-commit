@@ -4,7 +4,8 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-printf '\033[1m→ pre-commit: biome check + typecheck\033[0m\n'
+printf '\033[1m→ pre-commit: bun lint + format check + typecheck\033[0m\n'
 bun run lint
+bun run format:check
 bun run typecheck
 printf '\033[32m✓ pre-commit green\033[0m\n'

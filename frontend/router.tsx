@@ -7,8 +7,8 @@ import {
 	createRoute,
 	createRouter,
 	Outlet,
-	RouterProvider,
 	redirect,
+	RouterProvider,
 } from '@tanstack/react-router'
 
 const rootRoute = createRootRoute({

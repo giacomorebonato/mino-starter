@@ -21,11 +21,11 @@ Requires Bun 1.4.3+ (see `.bun-version`).
 
 ## Verification
 
-- `bun run check` — biome + typecheck + knip + unit tests. Run before claiming work done.
+- `bun run check` — lint + format check + typecheck + knip + unit tests. Run before claiming work done.
 - `bun run check:full` — adds Playwright E2E. Run for UI/auth/route changes.
 - `bun run premerge` — `check` then fast-forward merge → main → push.
 
-Git hooks (`.githooks/`, wired by `bootstrap`) run biome+typecheck at commit and the full gate at push.
+Git hooks (`.githooks/`, wired by `bootstrap`) run lint, format checks, and type checking at commit and the full gate at push.
 
 ## Scripts
 
@@ -35,8 +35,10 @@ Git hooks (`.githooks/`, wired by `bootstrap`) run biome+typecheck at commit and
 - `bun test` — unit tests (backend + shared + frontend)
 - `bun run test:e2e` — Playwright E2E
 - `bun run check:full` — `check` + `test:e2e`
-- `bun run format` — Biome check + format (writes fixes)
-- `bun run check` — pre-merge gate (biome + typecheck + knip + test), shared by `premerge` and CI
+- `bun lint` — Bun built-in linter
+- `bun run format:check` — verify formatting without writing
+- `bun run format` — Bun lint fixes + formatting (writes fixes)
+- `bun run check` — pre-merge gate (lint + format check + typecheck + knip + test), shared by `premerge` and CI
 - `bun run premerge` — run `check`, then fast-forward merge current branch → main and push
 - `bun run bootstrap` — one-command fresh-clone setup (idempotent)
 - `bun run typecheck` — Bun’s built-in type checker (`bun --check`)

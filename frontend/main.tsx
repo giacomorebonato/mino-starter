@@ -1,6 +1,6 @@
 import { AppDevtools } from '@frontend/components/devtools'
 import { TRPCProvider } from '@frontend/lib/trpc'
-import { RouterProvider, router } from '@frontend/router'
+import { router, RouterProvider } from '@frontend/router'
 import type { AppRouter } from '@shared/trpc'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createTRPCClient, httpBatchLink } from '@trpc/client'

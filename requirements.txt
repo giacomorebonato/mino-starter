@@ -12,7 +12,7 @@
 * [better-auth](https://better-auth.com/)
 * [prisma ORM](https://www.prisma.io/orm)
 * React for frontend SPA only, no SSR
-* [Biome](https://biomejs.dev/) for both linting and  formatting. No semicolon, trailin comma, prefer single quotes
+* [Bun lint](https://bun.com/docs/lint) and [Bun fmt](https://bun.com/docs/format) for linting and formatting. No semicolons, trailing commas, prefer single quotes
 * [Playwright](https://playwright.dev/) for E2E testing
 * [apm](https://microsoft.github.io/apm/) for setting up MCP and skills
 

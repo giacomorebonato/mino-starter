@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Full pre-merge gate at push time: biome + typecheck + knip + unit tests.
+# Full pre-merge gate at push time: lint + format check + typecheck + knip + unit tests.
 # E2E (test:e2e) stays manual — run `bun run check:full` before claiming
 # UI/auth work is done.
 set -euo pipefail

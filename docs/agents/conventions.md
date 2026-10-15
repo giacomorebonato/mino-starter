@@ -4,13 +4,15 @@
 
 - Frontend: React 19 SPA, TanStack Router, TanStack Query, TanStack Form, tRPC (`@trpc/tanstack-react-query`), daisyUI v5 + Tailwind v4
 - Backend: `Bun.serve` fullstack server, tRPC v11 fetch adapter, better-auth (Prisma adapter, email/password only)
-- Lint/format: Biome; E2E: Playwright
+- Lint/format: Bun built-in `bun lint` + `bun fmt` (`bunfig.toml`); E2E: Playwright
+
+Bun lint keeps recommended JS/TS, React Hooks, and Bun test checks, plus explicit project rules and accessibility checks. Native equivalents cover promise handling, type imports, filenames, console use, and default exports. Biome-specific cognitive complexity, evolving/implicit-any inference, identifier naming, and React Compiler diagnostics are not reproduced. Tailwind classes and imports are sorted by `bun fmt`. Advisory return-type and function-size warnings do not fail the gate. Knip ignores the `fmt` binary because it is a Bun built-in that Knip does not yet recognize.
 
 ## TypeScript / files
 
 - TypeScript/TSX/config filenames: kebab-case (`note-list.tsx`, not `NoteList.tsx`). React component identifiers stay PascalCase; only file names are kebab-case.
 - No vendor-specific instruction filenames (e.g. `CLAUDE.md`) — use `AGENTS.md`.
-- Biome `noChildrenProp` is disabled for `frontend/components/note-form.tsx` and `frontend/components/auth-form.tsx` (TanStack Form's `form.Field`/`form.Subscribe` use a children render-prop).
+- Bun `react/no-children-prop` is disabled for `frontend/components/note-form.tsx` and `frontend/components/auth-form.tsx` (TanStack Form's `form.Field`/`form.Subscribe` use a children render-prop).
 - Placement rules + move verification gate live in `.agents/skills/project-structure/SKILL.md` — see [vertical-slices.md](vertical-slices.md).
 
 ## Client state

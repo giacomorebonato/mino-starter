@@ -60,7 +60,7 @@ without a test is acceptable; a test far from its source is not.
   only the file name is kebab-case.
 - Conventionally uppercase docs are the only exceptions: `AGENTS.md`,
   `README.md`, `LICENSE`.
-- Biome enforces `noDefaultExport` for `.ts`/`.tsx` (Playwright specs exempt).
+- Bun lint enforces `import/no-default-export` for `.ts`/`.tsx` (Playwright specs exempt).
   Don't add `export default` to app code.
 
 ## Do not (without explicit reason)
@@ -78,7 +78,7 @@ without a test is acceptable; a test far from its source is not.
 ## Verification gate (run after every add/move)
 
 ```sh
-bun run format      # Biome check --write (lint + format, writes fixes)
+bun run format      # Bun lint --fix + Bun fmt (writes fixes)
 bun run typecheck   # bun --check — catches broken imports / references
 bun run knip        # catches now-unused exports / dead files after a move
 bun run test        # unit tests still resolve from new paths

@@ -7,7 +7,7 @@ export function Sidebar() {
 	const signedIn = Boolean(user)
 
 	return (
-		<div className="flex h-full flex-col gap-4 bg-base-200 p-4">
+		<div className="bg-base-200 flex h-full flex-col gap-4 p-4">
 			<a href="/" className="flex items-center gap-2.5 px-2 pt-1">
 				<span className="wordmark">
 					mino-starter

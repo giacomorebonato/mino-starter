@@ -11,10 +11,10 @@
 - `bun run typecheck` — Bun’s built-in checker (`bun --check`)
 - `bun run test:e2e` — Playwright E2E
 - `bun run test:e2e:ssr` — SSR E2E against the prod server (separate `playwright.ssr.config.ts`; clears its cache in `e2e/global-setup.ts`). The default `playwright.config.ts` ignores `ssr.spec.ts`
-- `bun run lint` — Biome check (lint + format, verify-only)
-- `bun run check` — pre-merge gate: lint + typecheck + knip + unit tests. Shared with CI and git hooks. Run **before claiming any work done**
+- `bun run lint` — Bun built-in linter (verify-only); `bun run format:check` checks formatting
+- `bun run check` — pre-merge gate: lint + format check + typecheck + knip + unit tests. Shared with CI and git hooks. Run **before claiming any work done**
 - `bun run check:full` — `check` + Playwright E2E. Run before claiming UI/auth/route work done (E2E is intentionally excluded from `check` for speed)
-- `bun run format` — Biome check + format, **writes fixes** (`biome check --write .`); `check` verifies without writing
+- `bun run format` — Bun lint fixes + formatting, **writes fixes** (`bun lint --fix && bun fmt`); `check` verifies without writing
 - `bun run bootstrap` — fresh-clone setup (deps + APM skills/MCP + Prisma client + migrate dev DB + git hooks); idempotent
 - `bun run premerge` — `check`, then fast-forward current branch → main and push
 - `bun run db:migrate` — `prisma migrate dev && prisma generate` (v7: `migrate dev` no longer auto-generates the client) — see [prisma.md](prisma.md)
@@ -35,7 +35,7 @@
 
 ## Git hooks
 
-`.githooks/pre-commit` runs lint + typecheck. `.githooks/pre-push` runs `bun run check`. `bun run bootstrap` sets `core.hooksPath = .githooks`. Bypass with `--no-verify` only when intentionally breaking the gate.
+`.githooks/pre-commit` runs lint + format check + typecheck. `.githooks/pre-push` runs `bun run check`. `bun run bootstrap` sets `core.hooksPath = .githooks`. Bypass with `--no-verify` only when intentionally breaking the gate.
 
 ## Knip
 

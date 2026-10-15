@@ -6,9 +6,9 @@
 
 Run before opening. Tick what you ran.
 
-- [ ] `bun run check` (biome + typecheck + knip + unit tests)
+- [ ] `bun run check` (lint + format check + typecheck + knip + unit tests)
 - [ ] `bun run check:full` (adds Playwright E2E) — required for UI/auth/route changes
-- [ ] `bun run format` if Biome wrote fixes
+- [ ] `bun run format` and `bun run format:check` for formatting changes
 
 ## Notes
 

@@ -1,5 +1,7 @@
 import { resolve } from 'node:path'
+
 import { PrismaBunSqlite } from 'prisma-adapter-bun-sqlite'
+
 import { PrismaClient } from '../../prisma/generated/client'
 
 // Prisma CLI resolves relative `file:./` URLs against the schema directory

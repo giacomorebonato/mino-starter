@@ -1,5 +1,6 @@
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+
 import { defineConfig, env } from 'prisma/config'
 
 // Prisma ORM v7: connection URLs moved out of schema.prisma into prisma.config.ts.

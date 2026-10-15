@@ -34,7 +34,7 @@ export function NoteForm() {
 			className="flex max-w-sm flex-col gap-3"
 			onSubmit={(e) => {
 				e.preventDefault()
-				form.handleSubmit()
+				void form.handleSubmit()
 			}}
 		>
 			<form.Field

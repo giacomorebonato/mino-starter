@@ -1,4 +1,5 @@
 import { expect, test } from 'bun:test'
+
 import { signInSchema, signUpSchema } from '@shared/schemas/auth'
 
 test('signInSchema accepts a valid email and password', () => {
