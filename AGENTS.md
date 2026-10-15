@@ -2,7 +2,7 @@
 
 Bun fullstack starter: React 19 SPA (TanStack Router/Query/Form, tRPC, daisyUI v5 + Tailwind v4) on a `Bun.serve` fullstack server with tRPC v11 + better-auth over Prisma/SQLite.
 
-**Bun everywhere** — runtime, package manager, bundler, test runner. Never npm/pnpm/yarn.
+**latest version of Bun everywhere** — runtime, package manager, bundler, test runner, linter. Never npm/pnpm/yarn.
 
 - `bun run bootstrap` — fresh-clone setup (idempotent)
 - `bun run dev` — dev server with HMR
