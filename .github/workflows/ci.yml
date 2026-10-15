@@ -18,7 +18,7 @@ jobs:
           bun-version-file: .bun-version
       - run: bun install --frozen-lockfile
       - run: bun run db:generate
-      - run: bun run check
+      - run: bun run test:check
 
   deploy:
     needs: [check]

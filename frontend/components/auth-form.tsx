@@ -3,7 +3,9 @@ import { signInSchema, signUpSchema } from '@shared/schemas/auth'
 import { useForm } from '@tanstack/react-form'
 import { useState } from 'react'
 
-export function AuthForm({ mode }: { mode: 'signin' | 'signup' }) {
+type AuthMode = 'signin' | 'signup'
+
+function useAuthForm(mode: AuthMode) {
 	const [error, setError] = useState<string | null>(null)
 
 	const form = useForm({
@@ -36,6 +38,12 @@ export function AuthForm({ mode }: { mode: 'signin' | 'signup' }) {
 		},
 	})
 
+	return { form, error }
+}
+
+export function AuthForm({ mode }: { mode: AuthMode }) {
+	const { form, error } = useAuthForm(mode)
+
 	return (
 		<form
 			className="flex max-w-sm flex-col gap-2"
@@ -44,46 +52,25 @@ export function AuthForm({ mode }: { mode: 'signin' | 'signup' }) {
 				void form.handleSubmit()
 			}}
 		>
-			{mode === 'signup' && (
+			{(mode === 'signup'
+				? (['name', 'email', 'password'] as const)
+				: (['email', 'password'] as const)
+			).map((name) => (
 				<form.Field
-					name="name"
+					key={name}
+					name={name}
 					children={(field) => (
 						<input
 							className="input input-bordered w-full"
-							placeholder="Name"
+							type={name === 'name' ? 'text' : name}
+							placeholder={name.charAt(0).toUpperCase() + name.slice(1)}
 							value={field.state.value ?? ''}
 							onBlur={field.handleBlur}
 							onChange={(e) => field.handleChange(e.target.value)}
 						/>
 					)}
 				/>
-			)}
-			<form.Field
-				name="email"
-				children={(field) => (
-					<input
-						className="input input-bordered w-full"
-						type="email"
-						placeholder="Email"
-						value={field.state.value}
-						onBlur={field.handleBlur}
-						onChange={(e) => field.handleChange(e.target.value)}
-					/>
-				)}
-			/>
-			<form.Field
-				name="password"
-				children={(field) => (
-					<input
-						className="input input-bordered w-full"
-						type="password"
-						placeholder="Password"
-						value={field.state.value}
-						onBlur={field.handleBlur}
-						onChange={(e) => field.handleChange(e.target.value)}
-					/>
-				)}
-			/>
+			))}
 			{error && <div className="text-error">{error}</div>}
 			<form.Subscribe
 				selector={(state) => [state.canSubmit, state.isSubmitting]}

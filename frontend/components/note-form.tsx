@@ -3,7 +3,7 @@ import { noteSchema } from '@shared/schemas/note'
 import { useForm } from '@tanstack/react-form'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
-export function NoteForm() {
+function useNoteForm() {
 	const trpc = useTRPC()
 	const queryClient = useQueryClient()
 
@@ -28,6 +28,12 @@ export function NoteForm() {
 			},
 		}),
 	)
+
+	return { form, isPending: create.isPending }
+}
+
+export function NoteForm() {
+	const { form, isPending } = useNoteForm()
 
 	return (
 		<form
@@ -67,7 +73,7 @@ export function NoteForm() {
 					<button
 						className="btn btn-primary w-full"
 						type="submit"
-						disabled={!canSubmit || isSubmitting || create.isPending}
+						disabled={!canSubmit || isSubmitting || isPending}
 					>
 						Add note
 					</button>

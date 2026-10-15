@@ -24,30 +24,7 @@ export function AppLayout({
 				<header className="app-bar sticky top-0 z-10">
 					<div className="flex h-14 w-full items-center justify-between px-4">
 						<div className="flex items-center gap-2">
-							{bare ? null : (
-								<label
-									htmlFor="app-drawer"
-									className="btn btn-ghost btn-square lg:hidden"
-									aria-label="Open navigation"
-									data-testid="drawer-open"
-								>
-									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										className="h-5 w-5"
-										fill="none"
-										viewBox="0 0 24 24"
-										stroke="currentColor"
-									>
-										<title>Toggle sidebar</title>
-										<path
-											strokeLinecap="round"
-											strokeLinejoin="round"
-											strokeWidth={2}
-											d="M4 6h16M4 12h16M4 18h16"
-										/>
-									</svg>
-								</label>
-							)}
+							{bare ? null : <DrawerToggle />}
 						</div>
 						<div className="flex items-center gap-2">
 							{actions ??
@@ -77,5 +54,32 @@ export function AppLayout({
 				</div>
 			)}
 		</div>
+	)
+}
+
+function DrawerToggle() {
+	return (
+		<label
+			htmlFor="app-drawer"
+			className="btn btn-ghost btn-square lg:hidden"
+			aria-label="Open navigation"
+			data-testid="drawer-open"
+		>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				className="h-5 w-5"
+				fill="none"
+				viewBox="0 0 24 24"
+				stroke="currentColor"
+			>
+				<title>Toggle sidebar</title>
+				<path
+					strokeLinecap="round"
+					strokeLinejoin="round"
+					strokeWidth={2}
+					d="M4 6h16M4 12h16M4 18h16"
+				/>
+			</svg>
+		</label>
 	)
 }
