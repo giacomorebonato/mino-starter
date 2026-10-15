@@ -8,10 +8,11 @@
 - `bun run build` — production bundle via `scripts/build.ts` (`Bun.build` with `check: true`), React Compiler enabled — see [react-compiler.md](react-compiler.md) and [conventions.md](conventions.md#build-internals)
 - `bun run start` — production server (`NODE_ENV=production bun backend/server.ts`)
 - `bun run test` — unit tests (`bun test backend shared frontend`; co-located `__tests__/` next to each source)
-- `bun run typecheck` — Bun’s built-in checker (`bun --check`); `bun check` alone runs the project’s `check` script
+- `bun run typecheck` — Bun’s built-in checker (`bun --check`)
 - `bun run test:e2e` — Playwright E2E
 - `bun run test:e2e:ssr` — SSR E2E against the prod server (separate `playwright.ssr.config.ts`; clears its cache in `e2e/global-setup.ts`). The default `playwright.config.ts` ignores `ssr.spec.ts`
-- `bun run check` — pre-merge gate (`scripts/check.sh`): Biome check + typecheck + knip + unit tests. Shared with CI. Run **before claiming any work done**
+- `bun run lint` — Biome check (lint + format, verify-only)
+- `bun run check` — pre-merge gate: lint + typecheck + knip + unit tests. Shared with CI and git hooks. Run **before claiming any work done**
 - `bun run check:full` — `check` + Playwright E2E. Run before claiming UI/auth/route work done (E2E is intentionally excluded from `check` for speed)
 - `bun run format` — Biome check + format, **writes fixes** (`biome check --write .`); `check` verifies without writing
 - `bun run bootstrap` — fresh-clone setup (deps + APM skills/MCP + Prisma client + migrate dev DB + git hooks); idempotent
@@ -34,7 +35,7 @@
 
 ## Git hooks
 
-`.githooks/pre-commit` runs Biome check + typecheck. `.githooks/pre-push` runs the full `scripts/check.sh` gate. `bun run bootstrap` sets `core.hooksPath = .githooks`. Bypass with `--no-verify` only when intentionally breaking the gate.
+`.githooks/pre-commit` runs lint + typecheck. `.githooks/pre-push` runs `bun run check`. `bun run bootstrap` sets `core.hooksPath = .githooks`. Bypass with `--no-verify` only when intentionally breaking the gate.
 
 ## Knip
 
