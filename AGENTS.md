@@ -7,6 +7,9 @@ Bun fullstack starter: React 19 SPA (TanStack Router/Query/Form, tRPC, daisyUI v
 - `bun run bootstrap` — fresh-clone setup (idempotent)
 - `bun run dev` — dev server with HMR
 - `bun run build` — production bundle (React Compiler on)
+- `bun lint` — linting
+- `bun fmt` — formatting
+- `bun check` — type checking
 - `bun run test:check` — run before claiming work done; `bun run check:full` adds E2E for UI/auth/route changes
 - `bun run premerge` — `check`, then fast-forward → main and push
 
