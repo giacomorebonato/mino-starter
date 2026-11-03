@@ -11,7 +11,8 @@
 		"backend/trpc/*.ts",
 		"backend/__tests__/*.test.ts",
 		"frontend/__tests__/*.test.ts",
-		"scripts/prod-css.ts"
+		"scripts/prod-css.ts",
+		"frontend/stores/__tests__/*.test.ts"
 	],
 	"project": [
 		"frontend/**/*",

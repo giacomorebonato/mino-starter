@@ -19,7 +19,7 @@ Bun lint keeps recommended JS/TS, React Hooks, and Bun test checks, plus explici
 
 - Local UI state: React `useState`/`useReducer`.
 - Server state stays in TanStack Query — don't duplicate.
-- If shared client state becomes necessary later: add a single Zustand store under `frontend/stores/` with a `createStore()` factory wrapping `devtools` middleware.
+- If shared client state becomes necessary later: add a single Zustand store under `frontend/stores/` with a `createStore()` factory wrapping `devtools` middleware. Placement, patterns, and verification live in `.agents/skills/react-state-zustand/SKILL.md` — follow it.
 
 ## Forms
 

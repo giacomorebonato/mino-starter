@@ -13,6 +13,6 @@ Bun fullstack starter: React 19 SPA (TanStack Router/Query/Form, tRPC, daisyUI v
 - `bun run test:check` — run before claiming work done; `bun run check:full` adds E2E for UI/auth/route changes
 - `bun run premerge` — `check`, then fast-forward → main and push
 
-Aliases `@backend/* @frontend/* @shared/*`; unit tests co-located in `__tests__/`; placement rules in `.agents/skills/project-structure/SKILL.md`.
+Aliases `@backend/* @frontend/* @shared/*`; unit tests co-located in `__tests__/`; placement rules in `.agents/skills/project-structure/SKILL.md`. React client state: prefer Zustand per `.agents/skills/react-state-zustand/SKILL.md`.
 
 Deep docs: [vertical-slice workflow](docs/agents/vertical-slices.md) · [scripts/env/hooks](docs/agents/commands.md) · [conventions](docs/agents/conventions.md) · [Prisma v7](docs/agents/prisma.md) · [bot SSR](docs/agents/bot-ssr.md) · [React Compiler](docs/agents/react-compiler.md) · [deployment](docs/agents/deployment.md)

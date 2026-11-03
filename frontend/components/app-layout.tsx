@@ -1,6 +1,7 @@
 import { Sidebar } from '@frontend/components/sidebar'
 import { authClient } from '@frontend/lib/auth'
 import { isBareRoute } from '@frontend/lib/layout'
+import { useUiStore } from '@frontend/stores/ui-store'
 import { Link, useLocation } from '@tanstack/react-router'
 import type { ReactNode } from 'react'
 
@@ -18,7 +19,7 @@ export function AppLayout({
 
 	return (
 		<div className="drawer lg:drawer-open">
-			<input id="app-drawer" type="checkbox" className="drawer-toggle" />
+			<DrawerInput />
 
 			<div className="drawer-content flex min-h-screen flex-col">
 				<header className="app-bar sticky top-0 z-10">
@@ -54,6 +55,20 @@ export function AppLayout({
 				</div>
 			)}
 		</div>
+	)
+}
+
+function DrawerInput() {
+	const sidebarOpen = useUiStore((state) => state.sidebarOpen)
+	const setSidebarOpen = useUiStore((state) => state.setSidebarOpen)
+	return (
+		<input
+			id="app-drawer"
+			type="checkbox"
+			className="drawer-toggle"
+			checked={sidebarOpen}
+			onChange={(e) => setSidebarOpen(e.target.checked)}
+		/>
 	)
 }
 
