@@ -58,21 +58,211 @@ async function handleApi(req: Request): Promise<Response> {
 	})
 }
 
+type DevRoutes = import('bun').Serve.Routes<
+	undefined,
+	'/*' | '/api/auth/*' | '/api/trpc/*'
+>
+
+const devRoutes = {
+	// Dev: register /api/* as explicit function routes so they take
+	// precedence over the `/*` HTMLBundle wildcard. Bun matches `routes`
+	// before `fetch`, and a wildcard HTMLBundle route only accepts
+	// GET/HEAD (POST -> 405), which previously broke auth signup and
+	// tRPC mutations. The `/*` route serves the SPA shell + HMR for any
+	// other path so new client routes need no server change.
+	'/api/auth/*': handleApi,
+	'/api/trpc/*': handleApi,
+	'/*': devIndex as import('bun').HTMLBundle,
+} satisfies DevRoutes
+
+/**
+ * Tailnet mirror (dev only).
+ *
+ * `portless run` exposes the app on a `*.localhost` URL that only works on
+ * this machine — the proxy binds loopback and `*.localhost` resolves to
+ * 127.0.0.1 on whatever machine does the lookup, so other tailnet devices
+ * can't use it. This mirrors the same server on the machine's Tailscale
+ * name via `tailscale serve`, which gives a real HTTPS URL
+ * (`https://<machine>.ts.net:<port>`) reachable from the whole tailnet.
+ *
+ * Two Bun limitations shape the design:
+ * - The dev HTMLBundle host check 403s any `Host` that isn't localhost,
+ *   `*.localhost`, an IP literal, or the configured `hostname`
+ *   (Bun 1.4.4 accepts but ignores `development.allowedHosts` — PR #40733
+ *   is not merged). Binding the mirror to `hostname: <machine>.ts.net`
+ *   makes Bun accept the tailnet `Host`.
+ * - The HMR WebSocket origin check only allows localhost origins, so the
+ *   mirror runs with `hmr: false` (remote browsing works; hot reload stays
+ *   local).
+ */
+/** Tailnet DNS name of this machine, or null when Tailscale is absent/down. */
+async function tailnetDnsName(): Promise<string | null> {
+	const status = Bun.spawnSync(['tailscale', 'status', '--json'], {
+		stdout: 'pipe',
+		stderr: 'ignore',
+	})
+	if (status.exitCode !== 0) return null
+	try {
+		const self = JSON.parse(status.stdout.toString()).Self
+		const dnsName: string | undefined = self?.DNSName?.replace(/\.$/, '')
+		return dnsName ?? null
+	} catch {
+		return null
+	}
+}
+
+/** The tailnet IP for the given name, or null when it doesn't resolve. */
+async function tailnetAddress(dnsName: string): Promise<string | null> {
+	const { lookup } = await import('node:dns/promises')
+	return lookup(dnsName)
+		.then((r) => r.address)
+		.catch(() => null)
+}
+
+/** First preferred serve port (portless's order) not already in use. */
+function pickServePort(): number {
+	const preferred = [443, 8443, 8444, 8445, 8446, 8447, 8448, 8449, 8450]
+	const used = new Set<number>()
+	const status = Bun.spawnSync(['tailscale', 'serve', 'status', '--json'], {
+		stdout: 'pipe',
+		stderr: 'ignore',
+	})
+	if (status.exitCode === 0) {
+		try {
+			const cfg = JSON.parse(status.stdout.toString())
+			for (const p of Object.keys(cfg?.TCP ?? {})) used.add(Number(p))
+		} catch {
+			// treat as "no ports known"; registration will catch conflicts
+		}
+	}
+	return preferred.find((p) => !used.has(p)) ?? 8451
+}
+
+/** Bind a second Bun.serve on the tailnet IP, same port as primary. */
+function bindTailnetMirror(
+	primary: import('bun').Server<undefined>,
+	dnsName: string,
+): import('bun').Server<undefined> | null {
+	try {
+		// Same port as primary, different interface: primary is loopback
+		// (portless targets 127.0.0.1), this binds the tailnet IP.
+		return Bun.serve({
+			port: primary.port,
+			hostname: dnsName,
+			idleTimeout: 30,
+			routes: devRoutes,
+			development: { hmr: false, console: true },
+		})
+	} catch {
+		// Bind failure (name stopped resolving, port in use on that interface).
+		return null
+	}
+}
+
+/**
+ * Loopback proxy fronting the mirror for `tailscale serve`.
+ *
+ * tailscaled can't dial this machine's own tailnet IP (its serve hangs), so
+ * serve must target loopback. A plain `fetch` handler has no host check, and
+ * `fetch(url, req)` regenerates the Host header from the target URL — the
+ * mirror is hostname-bound to the ts name, so it accepts that Host.
+ */
+function bindTailnetProxy(
+	mirror: import('bun').Server<undefined>,
+	dnsName: string,
+): import('bun').Server<undefined> | null {
+	try {
+		return Bun.serve({
+			port: 0,
+			hostname: '127.0.0.1',
+			idleTimeout: 30,
+			async fetch(req) {
+				const url = new URL(req.url)
+				url.hostname = dnsName
+				url.port = String(mirror.port)
+				return fetch(url, req)
+			},
+		})
+	} catch {
+		return null
+	}
+}
+
+/** Register the mirror with `tailscale serve`; null when registration fails. */
+function publishTailnetMirror(
+	proxyPort: number,
+	dnsName: string,
+): { url: string; httpsPort: number } | null {
+	// Publish via `tailscale serve` so remote devices get HTTPS with a
+	// valid cert. Target is the loopback proxy: tailscaled cannot dial this
+	// machine's own tailnet IP, so loopback is the only address that works.
+	const httpsPort = pickServePort()
+	const register = Bun.spawnSync(
+		[
+			'tailscale',
+			'serve',
+			'--bg',
+			'--yes',
+			`--https=${httpsPort}`,
+			`http://127.0.0.1:${proxyPort}`,
+		],
+		{ stdout: 'pipe', stderr: 'pipe' },
+	)
+	if (register.exitCode !== 0) {
+		console.warn(
+			`[tailnet] tailscale serve failed on :${httpsPort}; tailnet mirror disabled`,
+		)
+		return null
+	}
+	const url = `https://${dnsName}${httpsPort === 443 ? '' : `:${httpsPort}`}`
+	return { url, httpsPort }
+}
+
+async function startTailnetMirror(
+	primary: import('bun').Server<undefined>,
+): Promise<import('bun').Server<undefined> | null> {
+	if (process.env.DEV_TAILSCALE === '0') return null
+	const dnsName = await tailnetDnsName()
+	if (!dnsName) return null
+	const address = await tailnetAddress(dnsName)
+	if (!address) return null
+	const mirror = bindTailnetMirror(primary, dnsName)
+	if (!mirror) return null
+	const proxy = bindTailnetProxy(mirror, dnsName)
+	if (!proxy) {
+		void mirror.stop(true)
+		return null
+	}
+	const published = publishTailnetMirror(proxy.port ?? 0, dnsName)
+	if (!published) {
+		void mirror.stop(true)
+		void proxy.stop(true)
+		return null
+	}
+	process.env.DEV_TAILSCALE_URL = published.url
+	console.log(`mino-starter on ${published.url} (tailnet)`)
+
+	// Unregister when the process goes down, whatever the reason.
+	const unregister = () => {
+		const off = Bun.spawnSync(
+			['tailscale', 'serve', '--yes', `--https=${published.httpsPort}`, 'off'],
+			{ stdout: 'ignore', stderr: 'ignore' },
+		)
+		void mirror.stop(true)
+		void proxy.stop(true)
+		void off
+	}
+	process.on('SIGINT', unregister)
+	process.on('SIGTERM', unregister)
+	process.on('exit', unregister)
+	return mirror
+}
+
 const server = Bun.serve({
 	port,
 	...(isDev
 		? {
-				// Dev: register /api/* as explicit function routes so they take
-				// precedence over the `/*` HTMLBundle wildcard. Bun matches `routes`
-				// before `fetch`, and a wildcard HTMLBundle route only accepts
-				// GET/HEAD (POST -> 405), which previously broke auth signup and
-				// tRPC mutations. The `/*` route serves the SPA shell + HMR for any
-				// other path so new client routes need no server change.
-				routes: {
-					'/api/auth/*': handleApi,
-					'/api/trpc/*': handleApi,
-					'/*': devIndex as unknown as import('bun').HTMLBundle,
-				},
+				routes: devRoutes,
 				development: { hmr: true, console: true },
 			}
 		: {
@@ -100,5 +290,9 @@ const server = Bun.serve({
 		return new Response(Bun.file('dist/index.html'))
 	},
 })
+
+if (isDev) {
+	await startTailnetMirror(server)
+}
 
 console.log(`mino-starter on http://localhost:${server.port}`)
