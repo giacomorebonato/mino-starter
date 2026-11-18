@@ -15,7 +15,8 @@
 - `bun run test:check` — pre-merge gate: lint + formatting + typecheck + knip + unit tests. Shared with CI and git hooks. Run **before claiming any work done**
 - `bun run check:full` — `test:check` + Playwright E2E. Run before claiming UI/auth/route work done (E2E is intentionally excluded from `test:check` for speed)
 - `bun lint --fix && bun fmt` — apply lint fixes and formatting
-- `bun run bootstrap` — fresh-clone setup (deps + APM skills/MCP + Prisma client + migrate dev DB + git hooks); idempotent
+- `bun run bootstrap` — fresh-clone/worktree setup (deps + .env creation + migrations + APM skills/MCP + Prisma client + git hooks); idempotent
+- `bun run setup-env` — creates `.env` from `.env.example` with a random `BETTER_AUTH_SECRET` and applies migrations when missing; no-op when `.env` exists or `DATABASE_URL` is already set (CI/Docker/prod). Runs from `postinstall` too
 - `bun run premerge` — `test:check`, then fast-forward current branch → main and push
 - `bun run db:migrate` — `prisma migrate dev && prisma generate` (v7: `migrate dev` no longer auto-generates the client) — see [prisma.md](prisma.md)
 - `bun run db:reset` — `prisma migrate reset`
@@ -35,7 +36,7 @@
 
 ## Git hooks
 
-`.githooks/pre-commit` runs lint + format check + typecheck. `.githooks/pre-push` runs `bun run test:check`. `bun run bootstrap` sets `core.hooksPath = .githooks`. Bypass with `--no-verify` only when intentionally breaking the gate.
+`lefthook.yml` defines the hooks; `scripts/install-hooks.sh` (run from `postinstall` and `bootstrap`) installs them into `.git/hooks`, migrating off the old `core.hooksPath = .githooks` setup. `pre-commit` runs lint + format check + typecheck (piped — first failure stops the rest). `pre-push` runs `bun run test:check`. `post-checkout` bootstraps fresh checkouts: git passes the null ref as `$1` for a new worktree or clone, and the hook script runs `bun run bootstrap`, which creates `.env` and applies migrations. When lefthook's binary is not resolvable in a brand-new worktree the hook skips silently — the `postinstall` net and the T3 worktree setup script cover the same ground. Bypass with `--no-verify` only when intentionally breaking the gate.
 
 ## Knip
 

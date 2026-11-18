@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# One-command setup for a fresh clone of mino-starter.
+# One-command setup for a fresh clone or worktree of mino-starter.
 # Idempotent — safe to re-run.
 #
-# Installs Bun deps, APM skills + MCP, generates the Prisma client,
-# applies migrations, and wires the checked-in git hooks.
+# Installs Bun deps, creates .env (random secret) and applies migrations,
+# installs APM skills + MCP, and wires the lefthook git hooks.
 set -euo pipefail
 
 cd "$(dirname "$0")/.."
@@ -12,6 +12,9 @@ step() { printf '\n\033[1m→ %s\033[0m\n' "$*"; }
 
 step 'bun install'
 bun install
+
+step '.env + migrations (skips when .env exists or DATABASE_URL is set)'
+bun run setup-env
 
 step 'apm install (skills + MCP declared in apm.yml)'
 if command -v apm >/dev/null 2>&1; then
@@ -27,7 +30,7 @@ bun run db:generate
 step 'db migrate (dev)'
 bun run db:migrate
 
-step 'git hooks (core.hooksPath = .githooks)'
-git config core.hooksPath .githooks
+step 'git hooks (lefthook, installed into .git/hooks)'
+bash scripts/install-hooks.sh
 
 printf '\n\033[32m✓ bootstrap complete. Run `bun run dev`.\033[0m\n'

@@ -5,8 +5,7 @@ Reusable full-stack starter built **AI-first**: Bun + React + tRPC + better-auth
 ## Quick start (fresh clone)
 
 ```sh
-cp .env.example .env # then fill BETTER_AUTH_SECRET etc.
-bun run bootstrap   # deps + APM skills/MCP + prisma generate + migrate + git hooks
+bun run bootstrap   # deps + .env (random secret) + migrations + APM skills/MCP + git hooks
 bun run dev          # http://localhost:3000
 ```
 
@@ -25,7 +24,7 @@ Requires Bun 1.4.3+ (see `.bun-version`).
 - `bun run check:full` — adds Playwright E2E. Run for UI/auth/route changes.
 - `bun run premerge` — `check` then fast-forward merge → main → push.
 
-Git hooks (`.githooks/`, wired by `bootstrap`) run lint, format checks, and type checking at commit and the full gate at push.
+Git hooks (lefthook, wired by `bootstrap` and `postinstall`) run lint, format checks, and type checking at commit and the full gate at push. Fresh worktrees and clones are bootstrapped automatically: the lefthook `post-checkout` hook runs `bun run bootstrap` (creates `.env` with a random secret, applies migrations) whenever git reports a null previous ref, and the `postinstall` net (`bun run setup-env`) covers any checkout where the hook could not run.
 
 ## Scripts
 
