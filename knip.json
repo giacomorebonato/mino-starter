@@ -22,11 +22,7 @@
 		"e2e/**/*",
 		"scripts/**/*"
 	],
-	"ignoreDependencies": [
-		"bun-plugin-tailwind",
-		"@lightpanda/browser",
-		"lefthook"
-	],
+	"ignoreDependencies": ["bun-plugin-tailwind", "@lightpanda/browser"],
 	"ignoreUnresolved": ["bun-types"],
 	"includeEntryExports": true,
 	"treatConfigHintsAsErrors": true,
