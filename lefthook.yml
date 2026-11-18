@@ -1,0 +1,28 @@
+# Lefthook git hooks — replaces the previous .githooks/ setup.
+# Mirrors the old gates exactly: pre-commit = lint + format check + typecheck,
+# pre-push = full test:check. post-checkout bootstraps fresh checkouts
+# (new worktrees and clones) — see .lefthook/post-checkout/bootstrap-worktree.sh.
+#
+# Hooks are installed into the shared .git/hooks by scripts/install-hooks.sh
+# (run from postinstall and bootstrap). Bypass a gate intentionally with
+# `git commit --no-verify`.
+
+pre-commit:
+  piped: true
+  commands:
+    lint:
+      run: bun lint
+    format:
+      run: bun run format:check
+    typecheck:
+      run: bun check
+
+pre-push:
+  commands:
+    check:
+      run: bun run test:check
+
+post-checkout:
+  scripts:
+    "bootstrap-worktree.sh":
+      runner: bash
