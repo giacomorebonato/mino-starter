@@ -2,9 +2,13 @@ FROM oven/bun:1.4.3 AS build
 WORKDIR /app
 COPY package.json bun.lock bunfig.toml ./
 COPY prisma ./prisma
+# postinstall runs scripts/install-hooks.sh + setup-env before db:generate:
+# scripts/ must exist and DATABASE_URL must be set (setup-env skips .env
+# creation when the env var is explicit — nothing is written in the image).
+COPY scripts ./scripts
+ENV DATABASE_URL=file:./dev.db
 RUN bun install --frozen-lockfile
 COPY . .
-ENV DATABASE_URL=file:./dev.db
 RUN bun run db:generate
 RUN bun run build
 # Download the Lightpanda browser binary explicitly. The @lightpanda/browser

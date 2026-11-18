@@ -31,7 +31,7 @@ Git hooks (lefthook, wired by `bootstrap` and `postinstall`) run lint, format ch
 - `bun run dev` — dev server with HMR
 - `bun run build` — production bundle
 - `bun run start` — production server
-- `bun test` — unit tests (backend + shared + frontend)
+- `bun test` — unit tests (backend + shared + frontend + scripts)
 - `bun run test:e2e` — Playwright E2E
 - `bun run check:full` — `check` + `test:e2e`
 - `bun lint` — Bun built-in linter
