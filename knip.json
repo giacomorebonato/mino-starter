@@ -12,6 +12,7 @@
 		"backend/__tests__/*.test.ts",
 		"frontend/__tests__/*.test.ts",
 		"scripts/prod-css.ts",
+		"scripts/__tests__/*.test.ts",
 		"frontend/stores/__tests__/*.test.ts"
 	],
 	"project": [

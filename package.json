@@ -9,7 +9,7 @@
 		"dev": "portless run bun --hot backend/server.ts",
 		"build": "bun scripts/build.ts",
 		"start": "NODE_ENV=production bun backend/server.ts",
-		"test": "bun test backend shared frontend",
+		"test": "bun test backend shared frontend scripts",
 		"test:e2e": "bunx --bun playwright test",
 		"test:e2e:ssr": "bunx --bun playwright test --config=playwright.ssr.config.ts",
 		"knip": "bun --env-file=.env node_modules/.bin/knip",
@@ -21,7 +21,8 @@
 		"db:reset": "bun --env-file=.env run --bun prisma migrate reset",
 		"db:generate": "bun --env-file=.env run --bun prisma generate",
 		"db:deploy": "bun --env-file=.env run --bun prisma migrate deploy",
-		"postinstall": "bun run db:generate",
+		"setup-env": "bun scripts/setup-env.ts",
+		"postinstall": "bun run setup-env && bun run db:generate",
 		"format:check": "bun fmt --check"
 	},
 	"devDependencies": {
