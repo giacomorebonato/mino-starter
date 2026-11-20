@@ -13,6 +13,7 @@
 		"test:e2e": "bunx --bun playwright test",
 		"test:e2e:ssr": "bunx --bun playwright test --config=playwright.ssr.config.ts",
 		"knip": "bun --env-file=.env node_modules/.bin/knip",
+		"intent": "intent",
 		"test:check": "bun lint && bun fmt && bun check && bun run knip && bun run test --parallel",
 		"check:full": "bun run test:check && bun run test:e2e",
 		"bootstrap": "bash scripts/bootstrap.sh",
@@ -22,7 +23,7 @@
 		"db:generate": "bun --env-file=.env run --bun prisma generate",
 		"db:deploy": "bun --env-file=.env run --bun prisma migrate deploy",
 		"setup-env": "bun scripts/setup-env.ts",
-		"postinstall": "bash scripts/install-hooks.sh && bun run setup-env && bun run db:generate",
+		"postinstall": "bash scripts/install-hooks.sh && bun run setup-env && bun run db:generate && (test -x node_modules/@tanstack/intent/dist/cli.mjs && ln -sfn ../@tanstack/intent/dist/cli.mjs node_modules/.bin/intent || true)",
 		"format:check": "bun fmt --check"
 	},
 	"devDependencies": {
@@ -62,7 +63,8 @@
 	},
 	"intent": {
 		"skills": [
-			"@tanstack/*"
+			"@tanstack/*",
+			"@trpc/*"
 		]
 	},
 	"trustedDependencies": [
