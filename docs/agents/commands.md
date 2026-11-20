@@ -44,6 +44,10 @@ Knip runs in CI and inside `bun run test:check`; it **fails** on unused dependen
 
 ## Skills / MCP
 
-`apm.yml` is the canonical list of skills + MCP servers (frontend-design, TanStack, daisyUI skills; Playwright, GitHub, Prisma, Context7 MCP). `bun run bootstrap` (or `apm install`) installs them.
+`apm.yml` is the canonical list of skills + MCP servers (frontend-design, TanStack, daisyUI skills; Playwright, GitHub, Prisma, Context7 MCP). `bun run bootstrap` (or `apm install --only apm`) installs the skills. The MCP entries are declaration-only: no MCP-capable target is listed in `apm.yml`, so plain `apm install` exits 1 at the MCP gate — use `apm install --only apm`.
 
 `.mcp.json` is a minimal hand-maintained fallback (Context7 only) for agents that read `.mcp.json` directly and do not understand APM; it is intentionally **not** kept in lockstep with `apm.yml` because some APM-managed servers need tokens/secrets not appropriate to ship in a starter. Do not hand-add token-gated servers to `.mcp.json`.
+
+## TanStack Intent
+
+`@tanstack/intent` surfaces version-matched skills that ship inside installed npm packages (`package.json#intent.skills` allowlist, currently `@tanstack/*` and `@trpc/*`). The managed `intent-skills` block at the top of `AGENTS.md` tells agents to run `intent list` / `intent load <package>#<skill>` before relevant work. Run it via `bun run intent list` — the plain `intent` bin is shadowed by `@tanstack/devtools` (bin name collision), so `bun run intent` wraps `bunx --no-install --package @tanstack/intent intent`. Update the allowlist with `npx @tanstack/intent@latest install --review`, then re-run `npx @tanstack/intent@latest install`.

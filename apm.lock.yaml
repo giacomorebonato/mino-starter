@@ -1,5 +1,5 @@
 lockfile_version: '1'
-generated_at: '2026-11-20T10:19:02.700990+00:00'
+generated_at: '2026-11-20T10:34:53.736688+00:00'
 apm_version: 0.36.1
 dependencies:
 - repo_url: anthropics/skills
@@ -1632,3 +1632,4 @@ mcp_configs:
     name: io.github.upstash/context7
   io.prisma/mcp:
     name: io.prisma/mcp
+mcp_target_servers: {}

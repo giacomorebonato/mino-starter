@@ -16,12 +16,12 @@ bun install
 step '.env + migrations (skips when .env exists or DATABASE_URL is set)'
 bun run setup-env
 
-step 'apm install (skills + MCP declared in apm.yml)'
+step 'apm install (skills from apm.yml; MCP deps stay declaration-only)'
 if command -v apm >/dev/null 2>&1; then
-	apm install
+	apm install --only apm
 else
-	printf '\033[33mapm not found — skipping skills/MCP.\033[0m\n' \
-		'Install: https://microsoft.github.io/apm/ then run `apm install`.\n' >&2
+	printf '\033[33mapm not found — skipping skills.\033[0m\n' \
+		'Install: https://microsoft.github.io/apm/ then run `apm install --only apm`.\n' >&2
 fi
 
 step 'prisma generate (postinstall also does this; run again to be safe)'
