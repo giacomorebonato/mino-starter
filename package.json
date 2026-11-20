@@ -60,6 +60,11 @@
 		"zod": "4.4.3",
 		"zustand": "^5.0.16"
 	},
+	"intent": {
+		"skills": [
+			"@tanstack/*"
+		]
+	},
 	"trustedDependencies": [
 		"@lightpanda/browser"
 	]
